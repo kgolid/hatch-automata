@@ -2491,12 +2491,13 @@
     });
   }
   var GUI$1 = GUI;
+  //# sourceMappingURL=dat.gui.module.js.map
 
   let sketch = function(p) {
     let THE_SEED;
     let grid;
 
-    let grid_size = 800;
+    let grid_size = 1000;
     let cell_size;
 
     let options;
@@ -2506,7 +2507,7 @@
     const cols = ["#ec6c26", "#613a53", "#e8ac52", "#639aa0"];
 
     p.setup = function() {
-      p.createCanvas(1000, 1000);
+      p.createCanvas(1200, 1000);
       THE_SEED = p.floor(p.random(9999999));
       p.randomSeed(THE_SEED);
       p.frameRate(1);
@@ -2558,9 +2559,9 @@
       cell_size = grid_size / options.resolution;
 
       grid = [];
-      for (let i = 0; i < options.resolution; i++) {
+      for (let i = 0; i < options.resolution + 1; i++) {
         let row = [];
-        for (let j = 0; j < options.resolution; j++) {
+        for (let j = 0; j < options.resolution + 1; j++) {
           let px = { h: false, v: false, d: false };
           if (i == 0) px.h = true;
           if (j == 0) px.v = true;
@@ -2581,54 +2582,82 @@
           colorize(j, i);
         }
       }
+      grid = grid.slice(1).map(r => r.slice(1));
     }
 
     function draw_grid() {
       p.push();
       p.background("#d5cda1");
-      p.translate(100, 100);
+      p.noStroke();
+      p.translate(350, 70);
+      p.shearX(-p.PI / 6);
+      p.scale(1, p.sqrt(3) / 2);
       for (let i = 0; i < grid.length; i++) {
         for (let j = 0; j < grid[i].length; j++) {
-          p.push();
-          p.translate(j * cell_size, i * cell_size);
-          let g = grid[i][j];
+          if (-grid[i].length / 2 + i <= j && grid[i].length / 2 + i >= j) {
+            p.push();
+            p.translate(j * cell_size, i * cell_size);
+            let g = grid[i][j];
 
-          p.fill(cols[g.tc]);
-          p.noStroke();
-          p.beginShape();
-          p.vertex(0, 0);
-          p.vertex(cell_size, 0);
-          p.vertex(cell_size, cell_size);
-          p.vertex(0, cell_size);
-          p.endShape();
+            if (grid[i].length / 2 + i !== j) {
+              if (-grid[i].length / 2 + i !== j) {
+                p.fill(cols[g.tc]);
+                p.rect(0, 0, cell_size, cell_size);
+              } else {
+                p.fill(cols[g.tc]);
+                p.beginShape();
+                p.vertex(0, 0);
+                p.vertex(cell_size, 0);
+                p.vertex(cell_size, cell_size);
+                p.endShape();
+              }
+            }
 
-          p.fill(cols[g.lc]);
-          p.noStroke();
-          p.beginShape();
-          p.vertex(0, 0);
-          p.vertex(0, cell_size);
-          p.vertex(cell_size, cell_size);
-          p.endShape();
+            if (-grid[i].length / 2 + i !== j) {
+              p.fill(cols[g.lc]);
+              p.beginShape();
+              p.vertex(-1, -1);
+              p.vertex(-1, cell_size + 1);
+              p.vertex(cell_size + 1, cell_size + 1);
+              p.endShape();
+            }
 
-          p.pop();
+            p.pop();
+          }
         }
       }
 
       p.stroke("#3f273a");
+      p.strokeWeight(2);
       p.noFill();
+      p.translate(-1, -0.5);
       for (let i = 0; i < grid.length; i++) {
         for (let j = 0; j < grid[i].length; j++) {
-          p.push();
-          p.translate(j * cell_size, i * cell_size);
-          let g = grid[i][j];
+          if (-grid[i].length / 2 + i <= j && grid[i].length / 2 + i >= j) {
+            p.push();
+            p.translate(j * cell_size, i * cell_size);
+            let g = grid[i][j];
 
-          if (g.h) p.line(0, 0, cell_size, 0);
-          if (g.v) p.line(0, 0, 0, cell_size);
-          if (g.d) p.line(0, 0, cell_size, cell_size);
-          p.pop();
+            if (grid[i].length / 2 + i !== j) {
+              if (g.h) p.line(0, 0, cell_size, 0);
+            }
+
+            if (-grid[i].length / 2 + i !== j) {
+              if (g.v) p.line(0, 0, 0, cell_size);
+            }
+            if (g.d) p.line(0, 0, cell_size, cell_size);
+            p.pop();
+          }
         }
       }
-      p.rect(0, 0, grid_size, grid_size);
+      p.beginShape();
+      p.vertex(0, 0);
+      p.vertex(grid_size / 2, 0);
+      p.vertex(grid_size, grid_size / 2);
+      p.vertex(grid_size, grid_size);
+      p.vertex(grid_size / 2, grid_size);
+      p.vertex(0, grid_size / 2);
+      p.endShape(p.CLOSE);
 
       p.pop();
       print_seed();
@@ -2636,8 +2665,9 @@
 
     function print_seed() {
       let seed = options.h_seed_string + "-" + options.v_seed_string + "-" + options.d_seed_string;
+      p.textSize(16);
       p.textAlign(p.RIGHT);
-      p.text(seed, grid_size + 100, grid_size + 100 + 20);
+      p.text(seed, 840, 960);
     }
 
     function resolve(b1, b2, b3, seed) {

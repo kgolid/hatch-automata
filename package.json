@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
+  "hexagonal": "dist/index-hex.js",
   "scripts": {
     "build": "rollup -c",
     "watch": "rollup -c -w"
