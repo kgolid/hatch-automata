@@ -2535,10 +2535,6 @@
       run();
     };
 
-    p.draw = function() {
-      randomize();
-    };
-
     p.keyPressed = function() {
       if (p.keyCode === 80) p.saveCanvas("sketch_" + THE_SEED, "jpeg");
     };
