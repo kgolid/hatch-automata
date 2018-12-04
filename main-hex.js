@@ -135,7 +135,7 @@ let sketch = function(p) {
     }
 
     p.stroke("#3f273a");
-    p.strokeWeight(2);
+    p.strokeWeight(1);
     p.noFill();
     p.translate(-1, -0.5);
     for (let i = 0; i < grid.length; i++) {
@@ -172,9 +172,9 @@ let sketch = function(p) {
 
   function print_seed() {
     let seed = options.h_seed_string + "-" + options.v_seed_string + "-" + options.d_seed_string;
-    p.textSize(16);
+    p.textSize(12);
     p.textAlign(p.RIGHT);
-    p.text(seed, 840, 960);
+    p.text(seed, 840, 955);
   }
 
   function resolve(b1, b2, b3, seed) {
