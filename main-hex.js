@@ -19,26 +19,40 @@ let sketch = function(p) {
     p.randomSeed(THE_SEED);
     p.frameRate(1);
 
+    const seeds = get_seeds();
+
     options = {
       resolution: 40,
-      h_seed_string: randomInt(Math.pow(2, 8)),
-      v_seed_string: randomInt(Math.pow(2, 8)),
-      d_seed_string: randomInt(Math.pow(2, 8)),
+      h_seed_str: seeds[0],
+      v_seed_str: seeds[1],
+      d_seed_str: seeds[2],
       random_init: false,
-      randomize: () => {}
+      randomize: () => randomize()
     };
 
     gui = new dat.GUI();
 
     let f0 = gui.addFolder("Dimensions");
-    f0.add(options, "resolution", 10, 100, 2).onChange(run);
+    f0.add(options, "resolution", 10, 100, 2)
+      .name("Resolution")
+      .onChange(run);
     let f1 = gui.addFolder("Seeds");
-    f1.add(options, "h_seed_string").onChange(run);
-    f1.add(options, "v_seed_string").onChange(run);
-    f1.add(options, "d_seed_string").onChange(run);
-    f1.add(options, "randomize").onChange(randomize);
+    f1.add(options, "h_seed_str")
+      .name("H seed")
+      .onChange(run);
+    f1.add(options, "v_seed_str")
+      .name("V seed")
+      .onChange(run);
+    f1.add(options, "d_seed_str")
+      .name("D seed")
+      .onChange(run);
+    f1.add(options, "randomize").name("Randomize");
+    f1.open();
     let f2 = gui.addFolder("Random elements");
-    f2.add(options, "random_init").onChange(run);
+    f2.add(options, "random_init")
+      .name("Random init vals")
+      .onChange(run);
+
     run();
   };
 
@@ -47,22 +61,23 @@ let sketch = function(p) {
   };
 
   function randomize() {
-    options.h_seed_string = randomInt(Math.pow(2, 8));
-    options.v_seed_string = randomInt(Math.pow(2, 8));
-    options.d_seed_string = randomInt(Math.pow(2, 8));
+    options.h_seed_str = randomInt(Math.pow(2, 8));
+    options.v_seed_str = randomInt(Math.pow(2, 8));
+    options.d_seed_str = randomInt(Math.pow(2, 8));
     gui.updateDisplay();
     run();
   }
 
   function run() {
+    update_url();
     setup_grid();
     draw_grid();
   }
 
   function setup_grid() {
-    h_seed = binaryArray(8, options.h_seed_string);
-    v_seed = binaryArray(8, options.v_seed_string);
-    d_seed = binaryArray(8, options.d_seed_string);
+    h_seed = binaryArray(8, options.h_seed_str);
+    v_seed = binaryArray(8, options.v_seed_str);
+    d_seed = binaryArray(8, options.d_seed_str);
     cell_size = grid_size / options.resolution;
 
     grid = [];
@@ -144,11 +159,9 @@ let sketch = function(p) {
           p.push();
           p.translate(j * cell_size, i * cell_size);
           let g = grid[i][j];
-
           if (grid[i].length / 2 + i !== j) {
             if (g.h) p.line(0, 0, cell_size, 0);
           }
-
           if (-grid[i].length / 2 + i !== j) {
             if (g.v) p.line(0, 0, 0, cell_size);
           }
@@ -171,10 +184,24 @@ let sketch = function(p) {
   }
 
   function print_seed() {
-    let seed = options.h_seed_string + "-" + options.v_seed_string + "-" + options.d_seed_string;
+    let seed = options.h_seed_str + "-" + options.v_seed_str + "-" + options.d_seed_str;
     p.textSize(12);
     p.textAlign(p.RIGHT);
     p.text(seed, 840, 955);
+  }
+
+  function get_seeds() {
+    const url = window.location.href.split("#");
+    if (url.length === 1) return [1, 2, 3].map(_ => randomInt(Math.pow(2, 8)));
+    return url[1].split(":").map(x => +x);
+  }
+
+  function update_url() {
+    window.history.pushState(
+      null,
+      null,
+      "#" + options.h_seed_str + ":" + options.v_seed_str + ":" + options.d_seed_str
+    );
   }
 
   function resolve(b1, b2, b3, seed) {
