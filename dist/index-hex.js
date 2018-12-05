@@ -2497,7 +2497,10 @@
     let THE_SEED;
     let grid;
 
-    let grid_size = 1000;
+    const sw_dir = [p.cos((2 * p.PI) / 3), p.sin((2 * p.PI) / 3)];
+    const se_dir = [p.cos(p.PI / 3), p.sin(p.PI / 3)];
+
+    const grid_size = 1000;
     let cell_size;
 
     let options;
@@ -2605,25 +2608,29 @@
       p.background("#d5cda1");
       p.noStroke();
       p.translate(350, 70);
-      p.shearX(-p.PI / 6);
-      p.scale(1, p.sqrt(3) / 2);
       for (let i = 0; i < grid.length; i++) {
         for (let j = 0; j < grid[i].length; j++) {
           if (-grid[i].length / 2 + i <= j && grid[i].length / 2 + i >= j) {
             p.push();
-            p.translate(j * cell_size, i * cell_size);
             let g = grid[i][j];
+            p.translate(sw_dir[0] * i * cell_size, sw_dir[1] * i * cell_size);
+            p.translate(j * cell_size, 0);
 
             if (grid[i].length / 2 + i !== j) {
               if (-grid[i].length / 2 + i !== j) {
                 p.fill(cols[g.tc]);
-                p.rect(0, 0, cell_size, cell_size);
+                p.beginShape();
+                p.vertex(0, 0);
+                p.vertex(cell_size, 0);
+                p.vertex(se_dir[0] * cell_size, se_dir[1] * cell_size);
+                p.vertex(sw_dir[0] * cell_size, sw_dir[1] * cell_size);
+                p.endShape();
               } else {
                 p.fill(cols[g.tc]);
                 p.beginShape();
                 p.vertex(0, 0);
                 p.vertex(cell_size, 0);
-                p.vertex(cell_size, cell_size);
+                p.vertex(se_dir[0] * cell_size, se_dir[1] * cell_size);
                 p.endShape();
               }
             }
@@ -2631,9 +2638,9 @@
             if (-grid[i].length / 2 + i !== j) {
               p.fill(cols[g.lc]);
               p.beginShape();
-              p.vertex(-1, -1);
-              p.vertex(-1, cell_size + 1);
-              p.vertex(cell_size + 1, cell_size + 1);
+              p.vertex(0, -0.5);
+              p.vertex(se_dir[0] * cell_size + 0.5, se_dir[1] * cell_size + 0.5);
+              p.vertex(sw_dir[0] * cell_size - 0.5, sw_dir[1] * cell_size + 0.5);
               p.endShape();
             }
 
@@ -2645,31 +2652,33 @@
       p.stroke("#3f273a");
       p.strokeWeight(1);
       p.noFill();
-      p.translate(-1, -0.5);
+      p.translate(-0.5, sw_dir[1] * -0.5);
       for (let i = 0; i < grid.length; i++) {
         for (let j = 0; j < grid[i].length; j++) {
           if (-grid[i].length / 2 + i <= j && grid[i].length / 2 + i >= j) {
             p.push();
-            p.translate(j * cell_size, i * cell_size);
+            p.translate(sw_dir[0] * i * cell_size, sw_dir[1] * i * cell_size);
+            p.translate(j * cell_size, 0);
             let g = grid[i][j];
             if (grid[i].length / 2 + i !== j) {
               if (g.h) p.line(0, 0, cell_size, 0);
             }
             if (-grid[i].length / 2 + i !== j) {
-              if (g.v) p.line(0, 0, 0, cell_size);
+              if (g.v) p.line(0, 0, sw_dir[0] * cell_size, sw_dir[1] * cell_size);
             }
-            if (g.d) p.line(0, 0, cell_size, cell_size);
+            if (g.d) p.line(0, 0, se_dir[0] * cell_size, se_dir[1] * cell_size);
             p.pop();
           }
         }
       }
+      p.translate(0.5, p.sin((2 * p.PI) / 3) * 0.5);
       p.beginShape();
       p.vertex(0, 0);
       p.vertex(grid_size / 2, 0);
-      p.vertex(grid_size, grid_size / 2);
-      p.vertex(grid_size, grid_size);
-      p.vertex(grid_size / 2, grid_size);
-      p.vertex(0, grid_size / 2);
+      p.vertex(grid_size / 2 + (se_dir[0] * grid_size) / 2, (se_dir[1] * grid_size) / 2);
+      p.vertex(grid_size / 2, se_dir[1] * grid_size);
+      p.vertex(0, se_dir[1] * grid_size);
+      p.vertex((sw_dir[0] * grid_size) / 2, (sw_dir[1] * grid_size) / 2);
       p.endShape(p.CLOSE);
 
       p.pop();
