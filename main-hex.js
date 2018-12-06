@@ -30,14 +30,22 @@ let sketch = function(p) {
       v_seed_str: seeds[1],
       d_seed_str: seeds[2],
       random_init: false,
+      colorize: true,
+      stroke: true,
       randomize: () => randomize()
     };
 
     gui = new dat.GUI();
 
-    let f0 = gui.addFolder("Dimensions");
+    let f0 = gui.addFolder("Layout");
     f0.add(options, "resolution", 10, 100, 2)
       .name("Resolution")
+      .onChange(run);
+    f0.add(options, "colorize")
+      .name("Toggle color")
+      .onChange(run);
+    f0.add(options, "stroke")
+      .name("Toggle stroke")
       .onChange(run);
     let f1 = gui.addFolder("Seeds");
     f1.add(options, "h_seed_str")
@@ -113,80 +121,84 @@ let sketch = function(p) {
   function draw_grid() {
     p.push();
     p.background("#d5cda1");
-    p.noStroke();
     p.translate(350, 70);
-    for (let i = 0; i < grid.length; i++) {
-      for (let j = 0; j < grid[i].length; j++) {
-        if (-grid[i].length / 2 + i <= j && grid[i].length / 2 + i >= j) {
-          p.push();
-          let g = grid[i][j];
-          p.translate(sw_dir[0] * i * cell_size, sw_dir[1] * i * cell_size);
-          p.translate(j * cell_size, 0);
+    if (options.colorize) {
+      p.noStroke();
+      for (let i = 0; i < grid.length; i++) {
+        for (let j = 0; j < grid[i].length; j++) {
+          if (-grid[i].length / 2 + i <= j && grid[i].length / 2 + i >= j) {
+            p.push();
+            let g = grid[i][j];
+            p.translate(sw_dir[0] * i * cell_size, sw_dir[1] * i * cell_size);
+            p.translate(j * cell_size, 0);
 
-          if (grid[i].length / 2 + i !== j) {
+            if (grid[i].length / 2 + i !== j) {
+              if (-grid[i].length / 2 + i !== j) {
+                p.fill(cols[g.tc]);
+                p.beginShape();
+                p.vertex(0, 0);
+                p.vertex(cell_size, 0);
+                p.vertex(se_dir[0] * cell_size, se_dir[1] * cell_size);
+                p.vertex(sw_dir[0] * cell_size, sw_dir[1] * cell_size);
+                p.endShape();
+              } else {
+                p.fill(cols[g.tc]);
+                p.beginShape();
+                p.vertex(0, 0);
+                p.vertex(cell_size, 0);
+                p.vertex(se_dir[0] * cell_size, se_dir[1] * cell_size);
+                p.endShape();
+              }
+            }
+
             if (-grid[i].length / 2 + i !== j) {
-              p.fill(cols[g.tc]);
+              p.fill(cols[g.lc]);
               p.beginShape();
-              p.vertex(0, 0);
-              p.vertex(cell_size, 0);
-              p.vertex(se_dir[0] * cell_size, se_dir[1] * cell_size);
-              p.vertex(sw_dir[0] * cell_size, sw_dir[1] * cell_size);
-              p.endShape();
-            } else {
-              p.fill(cols[g.tc]);
-              p.beginShape();
-              p.vertex(0, 0);
-              p.vertex(cell_size, 0);
-              p.vertex(se_dir[0] * cell_size, se_dir[1] * cell_size);
+              p.vertex(0, -0.5);
+              p.vertex(se_dir[0] * cell_size + 0.5, se_dir[1] * cell_size + 0.5);
+              p.vertex(sw_dir[0] * cell_size - 0.5, sw_dir[1] * cell_size + 0.5);
               p.endShape();
             }
-          }
 
-          if (-grid[i].length / 2 + i !== j) {
-            p.fill(cols[g.lc]);
-            p.beginShape();
-            p.vertex(0, -0.5);
-            p.vertex(se_dir[0] * cell_size + 0.5, se_dir[1] * cell_size + 0.5);
-            p.vertex(sw_dir[0] * cell_size - 0.5, sw_dir[1] * cell_size + 0.5);
-            p.endShape();
+            p.pop();
           }
-
-          p.pop();
         }
       }
     }
 
-    p.stroke("#3f273a");
-    p.strokeWeight(1);
-    p.noFill();
-    p.translate(-0.5, sw_dir[1] * -0.5);
-    for (let i = 0; i < grid.length; i++) {
-      for (let j = 0; j < grid[i].length; j++) {
-        if (-grid[i].length / 2 + i <= j && grid[i].length / 2 + i >= j) {
-          p.push();
-          p.translate(sw_dir[0] * i * cell_size, sw_dir[1] * i * cell_size);
-          p.translate(j * cell_size, 0);
-          let g = grid[i][j];
-          if (grid[i].length / 2 + i !== j) {
-            if (g.h) p.line(0, 0, cell_size, 0);
+    if (options.stroke) {
+      p.stroke("#3f273a");
+      p.strokeWeight(1);
+      p.noFill();
+      p.translate(-0.5, sw_dir[1] * -0.5);
+      for (let i = 0; i < grid.length; i++) {
+        for (let j = 0; j < grid[i].length; j++) {
+          if (-grid[i].length / 2 + i <= j && grid[i].length / 2 + i >= j) {
+            p.push();
+            p.translate(sw_dir[0] * i * cell_size, sw_dir[1] * i * cell_size);
+            p.translate(j * cell_size, 0);
+            let g = grid[i][j];
+            if (grid[i].length / 2 + i !== j) {
+              if (g.h) p.line(0, 0, cell_size, 0);
+            }
+            if (-grid[i].length / 2 + i !== j) {
+              if (g.v) p.line(0, 0, sw_dir[0] * cell_size, sw_dir[1] * cell_size);
+            }
+            if (g.d) p.line(0, 0, se_dir[0] * cell_size, se_dir[1] * cell_size);
+            p.pop();
           }
-          if (-grid[i].length / 2 + i !== j) {
-            if (g.v) p.line(0, 0, sw_dir[0] * cell_size, sw_dir[1] * cell_size);
-          }
-          if (g.d) p.line(0, 0, se_dir[0] * cell_size, se_dir[1] * cell_size);
-          p.pop();
         }
       }
+      p.translate(0.5, p.sin((2 * p.PI) / 3) * 0.5);
+      p.beginShape();
+      p.vertex(0, 0);
+      p.vertex(grid_size / 2, 0);
+      p.vertex(grid_size / 2 + (se_dir[0] * grid_size) / 2, (se_dir[1] * grid_size) / 2);
+      p.vertex(grid_size / 2, se_dir[1] * grid_size);
+      p.vertex(0, se_dir[1] * grid_size);
+      p.vertex((sw_dir[0] * grid_size) / 2, (sw_dir[1] * grid_size) / 2);
+      p.endShape(p.CLOSE);
     }
-    p.translate(0.5, p.sin((2 * p.PI) / 3) * 0.5);
-    p.beginShape();
-    p.vertex(0, 0);
-    p.vertex(grid_size / 2, 0);
-    p.vertex(grid_size / 2 + (se_dir[0] * grid_size) / 2, (se_dir[1] * grid_size) / 2);
-    p.vertex(grid_size / 2, se_dir[1] * grid_size);
-    p.vertex(0, se_dir[1] * grid_size);
-    p.vertex((sw_dir[0] * grid_size) / 2, (sw_dir[1] * grid_size) / 2);
-    p.endShape(p.CLOSE);
 
     p.pop();
     print_seed();
