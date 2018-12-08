@@ -11,7 +11,8 @@
   "author": "Kjetil Golid",
   "license": "MIT",
   "dependencies": {
-    "dat.gui": "^0.7.3"
+    "dat.gui": "^0.7.3",
+    "isometric-automata": "^1.0.0"
   },
   "devDependencies": {
     "rollup": "^0.67.4",
