@@ -2608,13 +2608,10 @@
   }
 
   let sketch = function(p) {
-    const sw_dir = [p.cos((2 * p.PI) / 3), p.sin((2 * p.PI) / 3)];
-    const se_dir = [p.cos(p.PI / 3), p.sin(p.PI / 3)];
-
     const grid_size = 1000;
 
-    let options;
     let gui$$1;
+    let options;
 
     const cols = ["#ec6c26", "#613a53", "#e8ac52", "#639aa0"];
 
@@ -2704,6 +2701,9 @@
 
     function draw_grid(grid) {
       const cell_size = grid_size / options.resolution;
+      const sw_dir = [p.cos((2 * p.PI) / 3), p.sin((2 * p.PI) / 3)];
+      const se_dir = [p.cos(p.PI / 3), p.sin(p.PI / 3)];
+
       p.push();
       p.background("#d5cda1");
       p.translate(350, 70);

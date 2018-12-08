@@ -1,97 +1,99 @@
 import * as dat from "dat.gui";
+import generate from "isometric-automata";
 
 let sketch = function(p) {
-  let THE_SEED;
-  let grid;
+  const grid_size = 800;
 
-  let grid_size = 800;
-  let cell_size;
-
-  let options;
   let gui;
-  let h_seed, v_seed, d_seed;
+  let options;
 
   const cols = ["#ec6c26", "#613a53", "#e8ac52", "#639aa0"];
 
   p.setup = function() {
-    p.createCanvas(1000, 1000);
-    THE_SEED = p.floor(p.random(9999999));
-    p.randomSeed(THE_SEED);
-    p.frameRate(1);
+    p.createCanvas(1200, 1000);
+
+    const seeds = get_seeds();
 
     options = {
       resolution: 40,
-      h_seed_string: randomInt(Math.pow(2, 8)),
-      v_seed_string: randomInt(Math.pow(2, 8)),
-      d_seed_string: randomInt(Math.pow(2, 8)),
+      h_seed_str: seeds[0],
+      v_seed_str: seeds[1],
+      d_seed_str: seeds[2],
       random_init: false,
-      randomize: () => {}
+      colorize: true,
+      stroke: true,
+      combination: "simple",
+      randomize: () => randomize()
     };
 
     gui = new dat.GUI();
 
-    let f0 = gui.addFolder("Dimensions");
-    f0.add(options, "resolution", 10, 100, 2).onChange(run);
+    let f0 = gui.addFolder("Layout");
+    f0.add(options, "resolution", 10, 100, 2)
+      .name("Resolution")
+      .onChange(run);
+    f0.add(options, "colorize")
+      .name("Toggle color")
+      .onChange(run);
+    f0.add(options, "stroke")
+      .name("Toggle stroke")
+      .onChange(run);
+    f0.add(options, "combination", ["simple", "strict", "regular"])
+      .name("Color combination")
+      .onChange(run);
     let f1 = gui.addFolder("Seeds");
-    f1.add(options, "h_seed_string").onChange(run);
-    f1.add(options, "v_seed_string").onChange(run);
-    f1.add(options, "d_seed_string").onChange(run);
-    f1.add(options, "randomize").onChange(randomize);
+    f1.add(options, "h_seed_str")
+      .name("H seed")
+      .onChange(run);
+    f1.add(options, "v_seed_str")
+      .name("V seed")
+      .onChange(run);
+    f1.add(options, "d_seed_str")
+      .name("D seed")
+      .onChange(run);
+    f1.add(options, "randomize").name("Randomize");
+    f1.open();
     let f2 = gui.addFolder("Random elements");
-    f2.add(options, "random_init").onChange(run);
+    f2.add(options, "random_init")
+      .name("Random init vals")
+      .onChange(run);
+
     run();
   };
 
   p.keyPressed = function() {
-    if (p.keyCode === 80) p.saveCanvas("sketch_" + THE_SEED, "jpeg");
+    if (p.keyCode === 80)
+      p.saveCanvas(
+        "sketch_" + options.h_seed_str + "_" + options.v_seed_str + "_" + options.d_seed_str,
+        "jpeg"
+      );
   };
 
   function randomize() {
-    options.h_seed_string = randomInt(Math.pow(2, 8));
-    options.v_seed_string = randomInt(Math.pow(2, 8));
-    options.d_seed_string = randomInt(Math.pow(2, 8));
+    options.h_seed_str = randomInt(Math.pow(2, 8));
+    options.v_seed_str = randomInt(Math.pow(2, 8));
+    options.d_seed_str = randomInt(Math.pow(2, 8));
     gui.updateDisplay();
     run();
   }
 
   function run() {
-    setup_grid();
-    draw_grid();
+    update_url();
+
+    const grid = setup_grid();
+    draw_grid(grid);
   }
 
   function setup_grid() {
-    h_seed = binaryArray(8, options.h_seed_string);
-    v_seed = binaryArray(8, options.v_seed_string);
-    d_seed = binaryArray(8, options.d_seed_string);
-    cell_size = grid_size / options.resolution;
-
-    grid = [];
-    for (let i = 0; i < options.resolution; i++) {
-      let row = [];
-      for (let j = 0; j < options.resolution; j++) {
-        let px = { h: false, v: false, d: false };
-        if (i == 0) px.h = true;
-        if (j == 0) px.v = true;
-        if (options.random_init && (i == 0 || j == 0)) px = { h: flip(), v: flip(), d: flip() };
-        row.push(px);
-      }
-      grid.push(row);
-    }
-
-    for (let i = 0; i < grid.length; i++) {
-      for (let j = 0; j < grid[i].length; j++) {
-        const px = grid[i][j];
-        if (i > 0 && j > 0) {
-          px.h = resolve(grid[i][j - 1].h, grid[i - 1][j].v, grid[i - 1][j - 1].d, h_seed);
-          px.v = resolve(grid[i][j - 1].h, grid[i - 1][j].v, grid[i - 1][j - 1].d, v_seed);
-          px.d = resolve(grid[i][j - 1].h, grid[i - 1][j].v, grid[i - 1][j - 1].d, d_seed);
-        }
-        colorize(j, i);
-      }
-    }
+    return generate({
+      seeds: { h: options.h_seed_str, v: options.v_seed_str, d: options.d_seed_str },
+      dim: { x: options.resolution, y: options.resolution },
+      random_init: options.random_init,
+      combo: options.combination
+    });
   }
-
-  function draw_grid() {
+  function draw_grid(grid) {
+    const cell_size = grid_size / options.resolution;
     p.push();
     p.background("#d5cda1");
     p.translate(100, 100);
@@ -148,57 +150,22 @@ let sketch = function(p) {
     p.text(seed, grid_size + 100, grid_size + 100 + 20);
   }
 
-  function resolve(b1, b2, b3, seed) {
-    const i = (b1 ? 4 : 0) + (b2 ? 2 : 0) + (b3 ? 1 : 0);
-    return seed[i];
+  function get_seeds() {
+    const url = window.location.href.split("#");
+    if (url.length === 1) return [1, 2, 3].map(_ => randomInt(Math.pow(2, 8)));
+    return url[1].split(":").map(x => +x);
   }
 
-  function binaryArray(num, seed) {
-    return seed
-      .toString(2)
-      .padStart(num, "0")
-      .split("")
-      .map(x => !!+x);
-  }
-
-  function flip() {
-    return Math.random() > 0.5;
+  function update_url() {
+    window.history.pushState(
+      null,
+      null,
+      "#" + options.h_seed_str + ":" + options.v_seed_str + ":" + options.d_seed_str
+    );
   }
 
   function randomInt(max) {
     return Math.floor(Math.random() * max);
-  }
-
-  function colorize(x, y) {
-    const cell = grid[y][x];
-    const topcol = grid[y - 1] ? grid[y - 1][x].lc : options.random_init ? randomInt(4) : 3;
-    const leftcol = grid[y][x - 1] ? grid[y][x - 1].tc : options.random_init ? randomInt(4) : 3;
-
-    if (!cell.h) cell.tc = topcol;
-    if (!cell.v) cell.lc = leftcol;
-    if (!cell.d) {
-      if (cell.h && !cell.v) cell.tc = cell.lc;
-      if (!cell.h && cell.v) cell.lc = cell.tc;
-      if (cell.h && cell.v) cell.tc = cell.lc = new_col(topcol, leftcol);
-    }
-    if (cell.d) {
-      if (cell.h) cell.tc = new_col(topcol, cell.lc ? cell.lc : null);
-      if (cell.v) cell.lc = new_col(leftcol, cell.tc);
-    }
-  }
-
-  function new_col(a, b) {
-    if (b === null) {
-      if (a === 0) return 1;
-      if (a === 1) return 2;
-      if (a === 2) return 3;
-      return 0;
-    }
-
-    if (a != 0 && b != 0) return 0;
-    if (a != 1 && b != 1) return 1;
-    if (a != 2 && b != 2) return 2;
-    return 3;
   }
 };
 new p5(sketch);
