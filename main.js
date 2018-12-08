@@ -10,7 +10,7 @@ let sketch = function(p) {
   const cols = ["#ec6c26", "#613a53", "#e8ac52", "#639aa0"];
 
   p.setup = function() {
-    p.createCanvas(1200, 1000);
+    p.createCanvas(1000, 1000);
 
     const seeds = get_seeds();
 
@@ -97,55 +97,59 @@ let sketch = function(p) {
     p.push();
     p.background("#d5cda1");
     p.translate(100, 100);
-    for (let i = 0; i < grid.length; i++) {
-      for (let j = 0; j < grid[i].length; j++) {
-        p.push();
-        p.translate(j * cell_size, i * cell_size);
-        let g = grid[i][j];
+    if (options.colorize) {
+      for (let i = 0; i < grid.length; i++) {
+        for (let j = 0; j < grid[i].length; j++) {
+          p.push();
+          p.translate(j * cell_size, i * cell_size);
+          let g = grid[i][j];
 
-        p.fill(cols[g.tc]);
-        p.noStroke();
-        p.beginShape();
-        p.vertex(0, 0);
-        p.vertex(cell_size, 0);
-        p.vertex(cell_size, cell_size);
-        p.vertex(0, cell_size);
-        p.endShape();
+          p.fill(cols[g.tc]);
+          p.noStroke();
+          p.beginShape();
+          p.vertex(0, 0);
+          p.vertex(cell_size, 0);
+          p.vertex(cell_size, cell_size);
+          p.vertex(0, cell_size);
+          p.endShape();
 
-        p.fill(cols[g.lc]);
-        p.noStroke();
-        p.beginShape();
-        p.vertex(0, 0);
-        p.vertex(0, cell_size);
-        p.vertex(cell_size, cell_size);
-        p.endShape();
+          p.fill(cols[g.lc]);
+          p.noStroke();
+          p.beginShape();
+          p.vertex(0, 0);
+          p.vertex(0, cell_size);
+          p.vertex(cell_size, cell_size);
+          p.endShape();
 
-        p.pop();
+          p.pop();
+        }
       }
     }
 
-    p.stroke("#3f273a");
-    p.noFill();
-    for (let i = 0; i < grid.length; i++) {
-      for (let j = 0; j < grid[i].length; j++) {
-        p.push();
-        p.translate(j * cell_size, i * cell_size);
-        let g = grid[i][j];
+    if (options.stroke) {
+      p.stroke("#3f273a");
+      p.noFill();
+      for (let i = 0; i < grid.length; i++) {
+        for (let j = 0; j < grid[i].length; j++) {
+          p.push();
+          p.translate(j * cell_size, i * cell_size);
+          let g = grid[i][j];
 
-        if (g.h) p.line(0, 0, cell_size, 0);
-        if (g.v) p.line(0, 0, 0, cell_size);
-        if (g.d) p.line(0, 0, cell_size, cell_size);
-        p.pop();
+          if (g.h) p.line(0, 0, cell_size, 0);
+          if (g.v) p.line(0, 0, 0, cell_size);
+          if (g.d) p.line(0, 0, cell_size, cell_size);
+          p.pop();
+        }
       }
+      p.rect(0, 0, grid_size, grid_size);
     }
-    p.rect(0, 0, grid_size, grid_size);
 
     p.pop();
     print_seed();
   }
 
   function print_seed() {
-    let seed = options.h_seed_string + "-" + options.v_seed_string + "-" + options.d_seed_string;
+    let seed = options.h_seed_str + "-" + options.v_seed_str + "-" + options.d_seed_str;
     p.textAlign(p.RIGHT);
     p.text(seed, grid_size + 100, grid_size + 100 + 20);
   }
