@@ -7,7 +7,12 @@ let sketch = function(p) {
   let gui;
   let options;
 
-  const cols = ["#ec6c26", "#613a53", "#e8ac52", "#639aa0"];
+  const cols1 = ["#ec6c26", "#613a53", "#e8ac52", "#639aa0", "#d5cda1"];
+  const cols2 = ["#29368f", "#e9697b", "#1b164d", "#f7d996", "#f2e8e4"];
+  const cols3 = ["#eb4b11", "#e5bc00", "#1d3b1a", "#f29881", "#eae2d0"];
+  const cols4 = ["#122438", "#dd672e", "#87c7ca", "#ebebeb", "#ebebeb"];
+
+  const cols = cols1;
 
   p.setup = function() {
     p.createCanvas(1200, 1000);
@@ -99,7 +104,7 @@ let sketch = function(p) {
     const se_dir = [p.cos(p.PI / 3), p.sin(p.PI / 3)];
 
     p.push();
-    p.background("#d5cda1");
+    p.background(cols[4]);
     p.translate(350, 70);
     if (options.colorize) {
       p.noStroke();

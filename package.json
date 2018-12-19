@@ -11,6 +11,7 @@
   "author": "Kjetil Golid",
   "license": "MIT",
   "dependencies": {
+    "chromotome": "^1.0.4",
     "dat.gui": "^0.7.3",
     "isometric-automata": "^1.0.0"
   },
