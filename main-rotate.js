@@ -1,6 +1,5 @@
 import * as dat from "dat.gui";
 import generate from "isometric-automata";
-//import generate from "./index.esm.js";
 
 let sketch = function(p) {
   const grid_size = 500;
@@ -8,15 +7,15 @@ let sketch = function(p) {
   let gui;
   let options;
 
-  const cols1 = ["#ec6c26", "#613a53", "#e8ac52", "#639aa0", "#d5cda1"];
-  const cols2 = ["#29368f", "#e9697b", "#1b164d", "#f7d996", "#f2e8e4"];
-  const cols3 = ["#eb4b11", "#e5bc00", "#1d3b1a", "#f29881", "#eae2d0"];
-  const cols4 = ["#122438", "#dd672e", "#87c7ca", "#ebebeb", "#ebebeb"];
-  const cols5 = ["#eab700", "#e64818", "#2c6393", "#eecfca", "#e7e6e4"];
-  const cols6 = ["#20342a", "#f74713", "#686d2c", "#e9b4a6", "#e5ded8"];
-  const cols7 = ["#ec643b", "#56b7ab", "#f8cb57", "#1f1e43", "#f7f2df"];
-
-  const cols = cols7;
+  let palettes = {
+    cols1: ["#ec6c26", "#613a53", "#e8ac52", "#639aa0", "#d5cda1"],
+    cols2: ["#29368f", "#e9697b", "#1b164d", "#f7d996", "#f2e8e4"],
+    cols3: ["#eb4b11", "#e5bc00", "#1d3b1a", "#f29881", "#eae2d0"],
+    cols4: ["#122438", "#dd672e", "#87c7ca", "#ebebeb", "#ebebeb"],
+    cols5: ["#eab700", "#e64818", "#2c6393", "#eecfca", "#e7e6e4"],
+    cols6: ["#20342a", "#f74713", "#686d2c", "#e9b4a6", "#e5ded8"],
+    cols7: ["#ec643b", "#56b7ab", "#f8cb57", "#1f1e43", "#f7f2df"]
+  };
 
   p.setup = function() {
     p.createCanvas(1200, 1000);
@@ -31,6 +30,7 @@ let sketch = function(p) {
       random_init: false,
       colorize: true,
       stroke: true,
+      palette: "cols1",
       combination: "simple",
       color_shift: true,
       randomize: () => randomize()
@@ -47,6 +47,9 @@ let sketch = function(p) {
       .onChange(run);
     f0.add(options, "stroke")
       .name("Toggle stroke")
+      .onChange(run);
+    f0.add(options, "palette", ["cols1", "cols2", "cols3", "cols4", "cols5", "cols6", "cols7"])
+      .name("Color palette")
       .onChange(run);
     f0.add(options, "combination", ["simple", "strict", "regular"])
       .name("Color combination")
@@ -94,7 +97,7 @@ let sketch = function(p) {
     update_url();
     const grid = setup_grid();
 
-    p.background(cols[4]);
+    p.background(palettes[options.palette][4]);
     p.push();
     p.translate(p.width / 2, p.height / 2);
     if (options.colorize) fill_hex(grid);
@@ -172,6 +175,7 @@ let sketch = function(p) {
     const cell_size = grid_size / options.resolution;
     const sw_dir = [p.cos((2 * p.PI) / 3), p.sin((2 * p.PI) / 3)];
     const se_dir = [p.cos(p.PI / 3), p.sin(p.PI / 3)];
+    const cols = palettes[options.palette];
 
     p.push();
     p.noStroke();
