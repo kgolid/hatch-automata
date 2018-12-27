@@ -17,5 +17,13 @@ export default [
       format: "umd"
     },
     plugins: [resolve()]
+  },
+  {
+    input: "main-rotate.js",
+    output: {
+      file: pkg.rotational,
+      format: "umd"
+    },
+    plugins: [resolve()]
   }
 ];

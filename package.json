@@ -4,6 +4,7 @@
   "description": "",
   "main": "dist/index.js",
   "hexagonal": "dist/index-hex.js",
+  "rotational": "dist/index-rotate.js",
   "scripts": {
     "build": "rollup -c",
     "watch": "rollup -c -w"
@@ -13,7 +14,7 @@
   "dependencies": {
     "chromotome": "^1.0.4",
     "dat.gui": "^0.7.3",
-    "isometric-automata": "^1.1.0"
+    "isometric-automata": "^1.2.0"
   },
   "devDependencies": {
     "rollup": "^0.67.4",
