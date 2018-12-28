@@ -5,6 +5,7 @@
   "main": "dist/index.js",
   "hexagonal": "dist/index-hex.js",
   "rotational": "dist/index-rotate.js",
+  "reflectonal": "dist/index-reflect.js",
   "scripts": {
     "build": "rollup -c",
     "watch": "rollup -c -w"

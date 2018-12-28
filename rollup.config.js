@@ -25,5 +25,13 @@ export default [
       format: "umd"
     },
     plugins: [resolve()]
+  },
+  {
+    input: "main-reflect.js",
+    output: {
+      file: pkg.reflectonal,
+      format: "umd"
+    },
+    plugins: [resolve()]
   }
 ];
