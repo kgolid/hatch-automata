@@ -2491,7 +2491,6 @@
     });
   }
   var GUI$1 = GUI;
-  //# sourceMappingURL=dat.gui.module.js.map
 
   var commonjsGlobal = typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
@@ -2826,7 +2825,7 @@
     };
 
     p.setup = function() {
-      p.createCanvas(1200, 1000);
+      p.createCanvas(1200, 1200);
 
       const seeds = get_seeds();
 
@@ -2838,9 +2837,10 @@
         random_init: false,
         colorize: true,
         stroke: true,
-        palette: "cols1",
+        palette: "cols7",
         combination: "simple",
         color_shift: true,
+        partitions: "sixths",
         randomize: () => randomize()
       };
 
@@ -2864,6 +2864,9 @@
         .onChange(run);
       f0.add(options, "color_shift")
         .name("Color shift")
+        .onChange(run);
+      f0.add(options, "partitions", ["sixths", "thirds"])
+        .name("Partitions")
         .onChange(run);
       let f1 = gui$$1.addFolder("Seeds");
       f1.add(options, "h_seed_str")
@@ -2905,9 +2908,9 @@
       update_url();
       const grid = setup_grid();
 
-      p.background(palettes[options.palette][4]);
       p.push();
       p.translate(p.width / 2, p.height / 2);
+      p.background(palettes[options.palette][4]);
       if (options.colorize) fill_hex(grid);
       if (options.stroke) stroke_hex(grid);
       p.pop();
@@ -2927,25 +2930,26 @@
     }
 
     function fill_hex(grid) {
-      fill_grid(grid);
-      p.rotate((2 * p.PI) / 3);
-      fill_grid(grid);
-      p.rotate((2 * p.PI) / 3);
-      fill_grid(grid);
+      const n = options.partitions === "sixths" ? 6 : 3;
+      for (var i = 0; i < n; i++) {
+        fill_grid(grid);
+        p.rotate((2 * p.PI) / n);
+      }
     }
 
     function stroke_hex(grid) {
-      stroke_grid(grid);
-      p.rotate((2 * p.PI) / 3);
-      stroke_grid(grid);
-      p.rotate((2 * p.PI) / 3);
-      stroke_grid(grid);
+      const n = options.partitions === "sixths" ? 6 : 3;
+      for (var i = 0; i < n; i++) {
+        stroke_grid(grid);
+        p.rotate((2 * p.PI) / n);
+      }
     }
 
     function stroke_grid(grid) {
       const cell_size = grid_size / options.resolution;
       const sw_dir = [p.cos((2 * p.PI) / 3), p.sin((2 * p.PI) / 3)];
       const se_dir = [p.cos(p.PI / 3), p.sin(p.PI / 3)];
+      const narrow = options.partitions === "sixths";
 
       p.push();
       p.stroke("#3f273a");
@@ -2953,29 +2957,18 @@
       p.noFill();
       p.translate(-0.5, sw_dir[1] * -0.5);
       for (let i = 0; i < grid.length; i++) {
-        for (let j = 0; j < grid[i].length; j++) {
+        const max = narrow ? i + 1 : grid[i].length;
+        for (let j = 0; j < max; j++) {
           p.push();
           p.translate(sw_dir[0] * i * cell_size, sw_dir[1] * i * cell_size);
           p.translate(j * cell_size, 0);
           let g = grid[i][j];
-          if (g.h) p.line(0, 0, cell_size, 0);
+          if (g.h && (i != j || !narrow)) p.line(0, 0, cell_size, 0);
           if (g.v) p.line(0, 0, sw_dir[0] * cell_size, sw_dir[1] * cell_size);
-          if (g.d) p.line(0, 0, se_dir[0] * cell_size, se_dir[1] * cell_size);
+          if (g.d && (i != j || !narrow)) p.line(0, 0, se_dir[0] * cell_size, se_dir[1] * cell_size);
           p.pop();
         }
       }
-      /*
-        p.translate(0.5, p.sin((2 * p.PI) / 3) * 0.5);
-        p.beginShape();
-        p.vertex(0, 0);
-        p.vertex(grid_size / 2, 0);
-        p.vertex(grid_size / 2 + (se_dir[0] * grid_size) / 2, (se_dir[1] * grid_size) / 2);
-        p.vertex(grid_size / 2, se_dir[1] * grid_size);
-        p.vertex(0, se_dir[1] * grid_size);
-        p.vertex((sw_dir[0] * grid_size) / 2, (sw_dir[1] * grid_size) / 2);
-        p.endShape(p.CLOSE);
-        */
-
       p.pop();
     }
 
@@ -2984,23 +2977,27 @@
       const sw_dir = [p.cos((2 * p.PI) / 3), p.sin((2 * p.PI) / 3)];
       const se_dir = [p.cos(p.PI / 3), p.sin(p.PI / 3)];
       const cols = palettes[options.palette];
+      const narrow = options.partitions === "sixths";
 
       p.push();
       p.noStroke();
       for (let i = 0; i < grid.length; i++) {
-        for (let j = 0; j < grid[i].length; j++) {
+        const max = narrow ? i + 1 : grid[i].length;
+        for (let j = 0; j < max; j++) {
           p.push();
-          let g = grid[i][j];
           p.translate(sw_dir[0] * i * cell_size, sw_dir[1] * i * cell_size);
           p.translate(j * cell_size, 0);
+          let g = grid[i][j];
 
-          p.fill(cols[g.tc]);
-          p.beginShape();
-          p.vertex(0, 0);
-          p.vertex(cell_size, 0);
-          p.vertex(se_dir[0] * cell_size, se_dir[1] * cell_size);
-          p.vertex(sw_dir[0] * cell_size, sw_dir[1] * cell_size);
-          p.endShape();
+          if (i != j || !narrow) {
+            p.fill(cols[g.tc]);
+            p.beginShape();
+            p.vertex(0, 0);
+            p.vertex(cell_size, 0);
+            p.vertex(se_dir[0] * cell_size, se_dir[1] * cell_size);
+            p.vertex(sw_dir[0] * cell_size, sw_dir[1] * cell_size);
+            p.endShape();
+          }
 
           p.fill(cols[g.lc]);
           p.beginShape();
@@ -3024,7 +3021,7 @@
       let seed = options.h_seed_str + "-" + options.v_seed_str + "-" + options.d_seed_str;
       p.textSize(12);
       p.textAlign(p.RIGHT);
-      p.text(seed, 840, 955);
+      p.text(seed, 840, 1055);
     }
 
     function get_seeds() {
