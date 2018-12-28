@@ -2683,7 +2683,9 @@
     dim,
     random_init = false,
     init_seed = null,
-    combo = 'simple'
+    palette_size = 4,
+    combo = 'simple',
+    offset = 1
   }) {
     rng = init_seed ? seedRandom('init_seed') : seedRandom();
     grid = [];
@@ -2692,9 +2694,9 @@
     const v_seed = binaryArray(8, seeds.v);
     const d_seed = binaryArray(8, seeds.d);
 
-    for (let i = 0; i < dim.y + 1; i++) {
+    for (let i = 0; i < dim.y + offset; i++) {
       let row = [];
-      for (let j = 0; j < dim.x + 1; j++) {
+      for (let j = 0; j < dim.x + offset; j++) {
         let px = { h: false, v: false, d: false };
         if (i == 0) px.h = true;
         if (j == 0) px.v = true;
@@ -2728,46 +2730,55 @@
             d_seed
           );
         }
-        colorize(j, i);
+        colorize(j, i, random_init, palette_size);
       }
     }
-    return grid.slice(1).map(r => r.slice(1));
+    return grid.slice(offset).map(r => r.slice(offset));
   }
 
-  function colorize(x, y, random_init) {
+  function colorize(x, y, random_init, palette_size) {
     const cell = grid[y][x];
     const topcol = grid[y - 1]
       ? grid[y - 1][x].lc
       : random_init
-      ? randomInt(4)
-      : 3;
+      ? randomInt(palette_size)
+      : palette_size - 1;
     const leftcol = grid[y][x - 1]
       ? grid[y][x - 1].tc
       : random_init
-      ? randomInt(4)
-      : 3;
+      ? randomInt(palette_size)
+      : palette_size - 1;
 
     if (!cell.h) cell.tc = topcol;
     if (!cell.v) cell.lc = leftcol;
     if (!cell.d) {
       if (cell.h && !cell.v) cell.tc = cell.lc;
       if (!cell.h && cell.v) cell.lc = cell.tc;
-      if (cell.h && cell.v) cell.tc = cell.lc = new_col(topcol, leftcol);
+      if (cell.h && cell.v)
+        cell.tc = cell.lc = new_col(topcol, leftcol, palette_size);
     }
     if (cell.d) {
-      if (cell.h) cell.tc = new_col(topcol, cell.lc ? cell.lc : null);
-      if (cell.v) cell.lc = new_col(leftcol, cell.tc);
+      if (cell.h)
+        cell.tc = new_col(topcol, cell.lc ? cell.lc : null, palette_size);
+      if (cell.v) cell.lc = new_col(leftcol, cell.tc, palette_size);
     }
   }
 
-  function new_col(a, b) {
-    if (b === null) return (a + 1) % 4;
-    return combine(a, b);
+  function new_col(a, b, n) {
+    if (b === null) return (a + 1) % n;
+    if (n === 4) return combine4(a, b);
+    if (n === 3) return combine3(a, b);
+    if (n === 2) return a === b ? 1 : 0;
   }
 
   // ---- UTILS ----
 
-  function combine(x, y) {
+  function combine3(x, y) {
+    const arr = [[1, 2, 1], [2, 2, 0], [1, 0, 0]];
+    return arr[y][x];
+  }
+
+  function combine4(x, y) {
     const simple = [[1, 2, 1, 1], [2, 0, 0, 0], [1, 0, 0, 0], [1, 0, 0, 0]];
     const strict = [[1, 2, 3, 1], [2, 3, 0, 2], [3, 0, 3, 0], [1, 2, 0, 1]];
     const regular = [[1, 3, 1, 2], [3, 2, 0, 0], [3, 0, 3, 1], [2, 2, 1, 0]];
