@@ -1,5 +1,6 @@
 import * as dat from "dat.gui";
 import generate from "isometric-automata";
+import * as tome from "chromotome";
 
 let sketch = function(p) {
   const grid_size = 500;
@@ -30,7 +31,7 @@ let sketch = function(p) {
       random_init: false,
       colorize: true,
       stroke: true,
-      palette: "cols7",
+      palette: tome.getRandom().name,
       combination: "simple",
       color_shift: true,
       partitions: "sixths",
@@ -49,7 +50,7 @@ let sketch = function(p) {
     f0.add(options, "stroke")
       .name("Toggle stroke")
       .onChange(run);
-    f0.add(options, "palette", ["cols1", "cols2", "cols3", "cols4", "cols5", "cols6", "cols7"])
+    f0.add(options, "palette", tome.getNames())
       .name("Color palette")
       .onChange(run);
     f0.add(options, "combination", ["simple", "strict", "regular"])
@@ -100,10 +101,11 @@ let sketch = function(p) {
   function run() {
     update_url();
     const grid = setup_grid();
+    const bg = tome.get(options.palette).background;
 
     p.push();
     p.translate(p.width / 2, p.height / 2);
-    p.background(palettes[options.palette][4]);
+    p.background(bg ? bg : "#d5cda1");
     if (options.colorize) fill_hex(grid);
     if (options.stroke) stroke_hex(grid);
     p.pop();
@@ -169,7 +171,7 @@ let sketch = function(p) {
     const cell_size = grid_size / options.resolution;
     const sw_dir = [p.cos((2 * p.PI) / 3), p.sin((2 * p.PI) / 3)];
     const se_dir = [p.cos(p.PI / 3), p.sin(p.PI / 3)];
-    const cols = palettes[options.palette];
+    const cols = tome.get(options.palette).colors;
     const narrow = options.partitions === "sixths";
 
     p.push();
