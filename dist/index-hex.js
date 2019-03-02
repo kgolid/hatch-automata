@@ -1825,7 +1825,7 @@
       }
     });
     if (Common.isUndefined(params.parent)) {
-      params.closed = false;
+      this.closed = params.closed || false;
       dom.addClass(this.domElement, GUI.CLASS_MAIN);
       dom.makeSelectable(this.domElement, false);
       if (SUPPORTS_LOCAL_STORAGE) {
@@ -2203,7 +2203,7 @@
     });
     if (controller instanceof NumberControllerSlider) {
       var box = new NumberControllerBox(controller.object, controller.property, { min: controller.__min, max: controller.__max, step: controller.__step });
-      Common.each(['updateDisplay', 'onChange', 'onFinishChange', 'step'], function (method) {
+      Common.each(['updateDisplay', 'onChange', 'onFinishChange', 'step', 'min', 'max'], function (method) {
         var pc = controller[method];
         var pb = box[method];
         controller[method] = box[method] = function () {
@@ -2809,15 +2809,255 @@
     return Math.floor(rng() * max);
   }
 
+  var colourscafe = [
+    {
+      name: 'cc239',
+      colors: ['#e3dd34', '#78496b', '#f0527f', '#a7e0e2'],
+      background: '#e0eff0'
+    },
+    {
+      name: 'cc234',
+      colors: ['#ffce49', '#ede8dc', '#ff5736', '#ff99b4'],
+      background: '#f7f4ed'
+    },
+    {
+      name: 'cc232',
+      colors: ['#5c5f46', '#ff7044', '#ffce39', '#66aeaa'],
+      background: '#e9ecde'
+    },
+    {
+      name: 'cc238',
+      colors: ['#553c60', '#ffb0a0', '#ff6749', '#fbe090'],
+      background: '#f5e9de'
+    },
+    {
+      name: 'cc242',
+      colors: ['#bbd444', '#fcd744', '#fa7b53', '#423c6f'],
+      background: '#faf4e4'
+    },
+    {
+      name: 'cc245',
+      colors: ['#0d4a4e', '#ff947b', '#ead3a2', '#5284ab'],
+      background: '#f6f4ed'
+    },
+    {
+      name: 'cc273',
+      colors: ['#363d4a', '#7b8a56', '#ff9369', '#f4c172'],
+      background: '#f0efe2'
+    }
+  ];
+
+  var ranganath = [
+    {
+      name: 'rag-mysore',
+      colors: ['#ec6c26', '#613a53', '#e8ac52', '#639aa0'],
+      background: '#d5cda1'
+    },
+    {
+      name: 'rag-gol',
+      colors: ['#d3693e', '#803528', '#f1b156', '#90a798'],
+      background: '#f0e0a4'
+    },
+    {
+      name: 'rag-belur',
+      colors: ['#f46e26', '#68485f', '#3d273a', '#535d55'],
+      background: '#dcd4a6'
+    },
+    {
+      name: 'rag-bangalore',
+      colors: ['#ea720e', '#ca5130', '#e9c25a', '#52534f'],
+      background: '#f9ecd3'
+    },
+    {
+      name: 'rag-taj',
+      colors: ['#ce565e', '#8e1752', '#f8a100', '#3ac1a6'],
+      background: '#efdea2'
+    },
+    {
+      name: 'rag-virupaksha',
+      colors: ['#f5736a', '#925951', '#feba4c', '#9d9b9d'],
+      background: '#eedfa2'
+    }
+  ];
+
+  var roygbivs = [
+    {
+      name: 'retro',
+      colors: [
+        '#69766f',
+        '#9ed6cb',
+        '#f7e5cc',
+        '#9d8f7f',
+        '#936454',
+        '#bf5c32',
+        '#efad57'
+      ]
+    },
+    {
+      name: 'retro-washedout',
+      colors: [
+        '#878a87',
+        '#cbdbc8',
+        '#e8e0d4',
+        '#b29e91',
+        '#9f736c',
+        '#b76254',
+        '#dfa372'
+      ]
+    },
+    {
+      name: 'roygbiv-warm',
+      colors: [
+        '#705f84',
+        '#687d99',
+        '#6c843e',
+        '#fc9a1a',
+        '#dc383a',
+        '#aa3a33',
+        '#9c4257'
+      ]
+    },
+    {
+      name: 'roygbiv-toned',
+      colors: [
+        '#817c77',
+        '#396c68',
+        '#89e3b7',
+        '#f59647',
+        '#d63644',
+        '#893f49',
+        '#4d3240'
+      ]
+    },
+    {
+      name: 'present-correct',
+      colors: [
+        '#fd3741',
+        '#fe4f11',
+        '#ff6800',
+        '#ffa61a',
+        '#ffc219',
+        '#ffd114',
+        '#fcd82e',
+        '#f4d730',
+        '#ced562',
+        '#8ac38f',
+        '#79b7a0',
+        '#72b5b1',
+        '#5b9bae',
+        '#6ba1b7',
+        '#49619d',
+        '#604791',
+        '#721e7f',
+        '#9b2b77',
+        '#ab2562',
+        '#ca2847'
+      ]
+    }
+  ];
+
+  var tundra = [
+    {
+      name: 'tundra1',
+      colors: ['#40708c', '#8e998c', '#5d3f37', '#ed6954', '#f2e9e2']
+    },
+    {
+      name: 'tundra2',
+      colors: ['#5f9e93', '#3d3638', '#733632', '#b66239', '#b0a1a4', '#e3dad2']
+    },
+    {
+      name: 'tundra3',
+      colors: [
+        '#87c3ca',
+        '#7b7377',
+        '#b2475d',
+        '#7d3e3e',
+        '#eb7f64',
+        '#d9c67a',
+        '#f3f2f2'
+      ]
+    },
+    {
+      name: 'tundra4',
+      colors: [
+        '#d53939',
+        '#b6754d',
+        '#a88d5f',
+        '#524643',
+        '#3c5a53',
+        '#7d8c7c',
+        '#dad6cd'
+      ]
+    }
+  ];
+
+  const palettes = [
+    {
+      name: 'frozen-rose',
+      colors: ['#29368f', '#e9697b', '#1b164d', '#f7d996'],
+      background: '#f2e8e4'
+    },
+    {
+      name: 'winter-night',
+      colors: ['#122438', '#dd672e', '#87c7ca', '#ebebeb'],
+      background: '#ebebeb'
+    },
+    {
+      name: 'saami',
+      colors: ['#eab700', '#e64818', '#2c6393', '#eecfca'],
+      background: '#e7e6e4'
+    },
+    {
+      name: 'knotberry1',
+      colors: ['#20342a', '#f74713', '#686d2c', '#e9b4a6'],
+      background: '#e5ded8'
+    },
+    {
+      name: 'knotberry2',
+      colors: ['#1d3b1a', '#eb4b11', '#e5bc00', '#f29881'],
+      background: '#eae2d0'
+    },
+    {
+      name: 'tricolor',
+      colors: ['#ec643b', '#56b7ab', '#f8cb57', '#1f1e43'],
+      background: '#f7f2df'
+    },
+    {
+      name: 'foxshelter',
+      colors: ['#ff3931', '#007861', '#311f27', '#bab9a4'],
+      background: '#dddddd'
+    },
+    {
+      name: 'hermes',
+      colors: ['#253852', '#51222f', '#b53435', '#ecbb51'],
+      background: '#eeccc2'
+    }
+  ];
+
+  const pals = palettes.concat(ranganath, roygbivs, tundra, colourscafe);
+
+  var palettes$1 = pals.map(p => {
+    p.size = p.colors.length;
+    return p;
+  });
+
+  function getRandom() {
+    return palettes$1[Math.floor(Math.random() * palettes$1.length)];
+  }
+
+  function get$1(name) {
+    return palettes$1.find(pal => pal.name == name);
+  }
+
+  function getNames() {
+    return palettes$1.map(p => p.name);
+  }
+
   let sketch = function(p) {
     const grid_size = 1000;
 
     let gui$$1;
     let options;
-
-    const cols1 = ["#ec6c26", "#613a53", "#e8ac52", "#639aa0", "#d5cda1"];
-
-    const cols = cols1;
 
     p.setup = function() {
       p.createCanvas(1200, 1000);
@@ -2832,6 +3072,7 @@
         random_init: false,
         colorize: true,
         stroke: true,
+        palette: getRandom().name,
         combination: "simple",
         randomize: () => randomize()
       };
@@ -2847,6 +3088,9 @@
         .onChange(run);
       f0.add(options, "stroke")
         .name("Toggle stroke")
+        .onChange(run);
+      f0.add(options, "palette", getNames())
+        .name("Color palette")
         .onChange(run);
       f0.add(options, "combination", ["simple", "strict", "regular"])
         .name("Color combination")
@@ -2907,9 +3151,11 @@
       const cell_size = grid_size / options.resolution;
       const sw_dir = [p.cos((2 * p.PI) / 3), p.sin((2 * p.PI) / 3)];
       const se_dir = [p.cos(p.PI / 3), p.sin(p.PI / 3)];
+      const cols = get$1(options.palette).colors;
+      const bg = get$1(options.palette).background;
 
       p.push();
-      p.background(cols[4]);
+      p.background(bg ? bg : "#d5cda1");
       p.translate(350, 70);
       if (options.colorize) {
         p.noStroke();

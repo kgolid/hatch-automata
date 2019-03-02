@@ -1,18 +1,12 @@
 import * as dat from "dat.gui";
 import generate from "isometric-automata";
+import * as tome from "chromotome";
 
 let sketch = function(p) {
   const grid_size = 1000;
 
   let gui;
   let options;
-
-  const cols1 = ["#ec6c26", "#613a53", "#e8ac52", "#639aa0", "#d5cda1"];
-  const cols2 = ["#29368f", "#e9697b", "#1b164d", "#f7d996", "#f2e8e4"];
-  const cols3 = ["#eb4b11", "#e5bc00", "#1d3b1a", "#f29881", "#eae2d0"];
-  const cols4 = ["#122438", "#dd672e", "#87c7ca", "#ebebeb", "#ebebeb"];
-
-  const cols = cols1;
 
   p.setup = function() {
     p.createCanvas(1200, 1000);
@@ -27,6 +21,7 @@ let sketch = function(p) {
       random_init: false,
       colorize: true,
       stroke: true,
+      palette: tome.getRandom().name,
       combination: "simple",
       randomize: () => randomize()
     };
@@ -42,6 +37,9 @@ let sketch = function(p) {
       .onChange(run);
     f0.add(options, "stroke")
       .name("Toggle stroke")
+      .onChange(run);
+    f0.add(options, "palette", tome.getNames())
+      .name("Color palette")
       .onChange(run);
     f0.add(options, "combination", ["simple", "strict", "regular"])
       .name("Color combination")
@@ -102,9 +100,11 @@ let sketch = function(p) {
     const cell_size = grid_size / options.resolution;
     const sw_dir = [p.cos((2 * p.PI) / 3), p.sin((2 * p.PI) / 3)];
     const se_dir = [p.cos(p.PI / 3), p.sin(p.PI / 3)];
+    const cols = tome.get(options.palette).colors;
+    const bg = tome.get(options.palette).background;
 
     p.push();
-    p.background(cols[4]);
+    p.background(bg ? bg : "#d5cda1");
     p.translate(350, 70);
     if (options.colorize) {
       p.noStroke();
