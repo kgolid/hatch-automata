@@ -3,23 +3,17 @@ import generate from "isometric-automata";
 import * as tome from "chromotome";
 
 let sketch = function(p) {
-  const grid_size = 500;
+  const print = false;
+
+  const grid_size = print ? 700 : 500;
+  const w = print ? 2100 : 1200;
+  const h = print ? 2970 : 1200;
 
   let gui;
   let options;
 
-  let palettes = {
-    cols1: ["#ec6c26", "#613a53", "#e8ac52", "#639aa0", "#d5cda1"],
-    cols2: ["#29368f", "#e9697b", "#1b164d", "#f7d996", "#f2e8e4"],
-    cols3: ["#eb4b11", "#e5bc00", "#1d3b1a", "#f29881", "#eae2d0"],
-    cols4: ["#122438", "#dd672e", "#87c7ca", "#ebebeb", "#ebebeb"],
-    cols5: ["#eab700", "#e64818", "#2c6393", "#eecfca", "#e7e6e4"],
-    cols6: ["#20342a", "#f74713", "#686d2c", "#e9b4a6", "#e5ded8"],
-    cols7: ["#ec643b", "#56b7ab", "#f8cb57", "#1f1e43", "#f7f2df"]
-  };
-
   p.setup = function() {
-    p.createCanvas(1200, 1200);
+    p.createCanvas(w, h);
 
     const seeds = get_seeds();
 
@@ -110,7 +104,7 @@ let sketch = function(p) {
     if (options.stroke) stroke_hex(grid);
     p.pop();
 
-    print_seed();
+    if (!print) print_seed();
   }
 
   function setup_grid() {
