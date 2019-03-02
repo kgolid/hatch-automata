@@ -1,7 +1,7 @@
 {
   "name": "hatch-automata",
   "version": "1.0.0",
-  "description": "",
+  "description": "Sketches showcasing isometric-automata generator.",
   "main": "dist/index.js",
   "hexagonal": "dist/index-hex.js",
   "rotational": "dist/index-rotate.js",
