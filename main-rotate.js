@@ -24,10 +24,11 @@ let sketch = function(p) {
       d_seed_str: seeds[2],
       random_init: false,
       colorize: true,
-      stroke: false,
+      stroke: true,
+      strokeWidth: 1,
       palette: tome.getRandom().name,
       symmetry: "rotate",
-      combination: "simple",
+      combination: "regular",
       color_shift: true,
       partitions: "sixths",
       randomize: () => randomize()
@@ -45,6 +46,9 @@ let sketch = function(p) {
     f0.add(options, "stroke")
       .name("Toggle stroke")
       .onChange(run);
+    f0.add(options, "strokeWidth", 1, 5, 1)
+      .name("Stroke width")
+      .onChange(run);
     f0.add(options, "palette", tome.getNames())
       .name("Color palette")
       .onChange(run);
@@ -54,11 +58,11 @@ let sketch = function(p) {
     f0.add(options, "symmetry", ["rotate", "reflect"])
       .name("Symmetry type")
       .onChange(run);
-    f0.add(options, "color_shift")
-      .name("Color shift")
-      .onChange(run);
     f0.add(options, "partitions", ["sixths", "thirds"])
       .name("Partitions")
+      .onChange(run);
+    f0.add(options, "color_shift")
+      .name("Color shift")
       .onChange(run);
     let f1 = gui.addFolder("Seeds");
     f1.add(options, "h_seed_str")

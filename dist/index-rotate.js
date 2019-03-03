@@ -3113,10 +3113,11 @@
         d_seed_str: seeds[2],
         random_init: false,
         colorize: true,
-        stroke: false,
+        stroke: true,
+        strokeWidth: 1,
         palette: getRandom().name,
         symmetry: "rotate",
-        combination: "simple",
+        combination: "regular",
         color_shift: true,
         partitions: "sixths",
         randomize: () => randomize()
@@ -3134,6 +3135,9 @@
       f0.add(options, "stroke")
         .name("Toggle stroke")
         .onChange(run);
+      f0.add(options, "strokeWidth", 1, 5, 1)
+        .name("Stroke width")
+        .onChange(run);
       f0.add(options, "palette", getNames())
         .name("Color palette")
         .onChange(run);
@@ -3143,11 +3147,11 @@
       f0.add(options, "symmetry", ["rotate", "reflect"])
         .name("Symmetry type")
         .onChange(run);
-      f0.add(options, "color_shift")
-        .name("Color shift")
-        .onChange(run);
       f0.add(options, "partitions", ["sixths", "thirds"])
         .name("Partitions")
+        .onChange(run);
+      f0.add(options, "color_shift")
+        .name("Color shift")
         .onChange(run);
       let f1 = gui$$1.addFolder("Seeds");
       f1.add(options, "h_seed_str")
@@ -3189,6 +3193,7 @@
       update_url();
       const grid = setup_grid();
       const bg = get$1(options.palette).background;
+      const strokeCol = get$1(options.palette).stroke;
 
       p.push();
       p.translate(p.width / 2, p.height / 2);
@@ -3203,6 +3208,9 @@
         }
       }
       if (options.stroke) {
+        p.noFill();
+        p.stroke(strokeCol ? strokeCol : "#3f273a");
+        p.strokeWeight(options.strokeWidth);
         if (options.symmetry === "rotate") stroke_hex(grid);
         else {
           stroke_hex(grid);
@@ -3210,6 +3218,8 @@
           stroke_hex(grid);
           p.scale(1, -1);
         }
+
+        draw_frame();
       }
 
       p.pop();
@@ -3252,9 +3262,6 @@
       const rotating = options.symmetry === "rotate";
 
       p.push();
-      p.stroke("#3f273a");
-      p.strokeWeight(1);
-      p.noFill();
       p.translate(-0.5, sw_dir[1] * -0.5);
       for (let i = 0; i < grid.length; i++) {
         let max = 0;
@@ -3324,22 +3331,20 @@
       }
     }
 
-    /*
     function draw_frame() {
       const sw_dir = [p.cos((2 * p.PI) / 3), p.sin((2 * p.PI) / 3)];
       const se_dir = [p.cos(p.PI / 3), p.sin(p.PI / 3)];
 
-      p.translate(0.5, p.sin((2 * p.PI) / 3) * 0.5);
+      p.translate(se_dir[0] * -grid_size, se_dir[1] * -grid_size);
       p.beginShape();
       p.vertex(0, 0);
-      p.vertex(grid_size / 2, 0);
-      p.vertex(grid_size / 2 + (se_dir[0] * grid_size) / 2, (se_dir[1] * grid_size) / 2);
-      p.vertex(grid_size / 2, se_dir[1] * grid_size);
-      p.vertex(0, se_dir[1] * grid_size);
-      p.vertex((sw_dir[0] * grid_size) / 2, (sw_dir[1] * grid_size) / 2);
+      p.vertex(grid_size, 0);
+      p.vertex(grid_size + se_dir[0] * grid_size, se_dir[1] * grid_size);
+      p.vertex(grid_size, se_dir[1] * grid_size * 2);
+      p.vertex(0, se_dir[1] * grid_size * 2);
+      p.vertex(sw_dir[0] * grid_size, sw_dir[1] * grid_size);
       p.endShape(p.CLOSE);
     }
-    */
 
     function print_seed() {
       let seed = options.h_seed_str + "-" + options.v_seed_str + "-" + options.d_seed_str;
