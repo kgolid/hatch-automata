@@ -26,6 +26,7 @@ let sketch = function(p) {
       colorize: true,
       stroke: false,
       palette: tome.getRandom().name,
+      symmetry: "rotate",
       combination: "simple",
       color_shift: true,
       partitions: "sixths",
@@ -49,6 +50,9 @@ let sketch = function(p) {
       .onChange(run);
     f0.add(options, "combination", ["simple", "strict", "regular"])
       .name("Color combination")
+      .onChange(run);
+    f0.add(options, "symmetry", ["rotate", "reflect"])
+      .name("Symmetry type")
       .onChange(run);
     f0.add(options, "color_shift")
       .name("Color shift")
@@ -100,8 +104,25 @@ let sketch = function(p) {
     p.push();
     p.translate(p.width / 2, p.height / 2);
     p.background(bg ? bg : "#d5cda1");
-    if (options.colorize) fill_hex(grid);
-    if (options.stroke) stroke_hex(grid);
+    if (options.colorize) {
+      if (options.symmetry === "rotate") fill_hex(grid);
+      else {
+        fill_hex(grid);
+        p.scale(1, -1);
+        fill_hex(grid);
+        p.scale(1, -1);
+      }
+    }
+    if (options.stroke) {
+      if (options.symmetry === "rotate") stroke_hex(grid);
+      else {
+        stroke_hex(grid);
+        p.scale(1, -1);
+        stroke_hex(grid);
+        p.scale(1, -1);
+      }
+    }
+
     p.pop();
 
     if (!print) print_seed();
@@ -139,6 +160,7 @@ let sketch = function(p) {
     const sw_dir = [p.cos((2 * p.PI) / 3), p.sin((2 * p.PI) / 3)];
     const se_dir = [p.cos(p.PI / 3), p.sin(p.PI / 3)];
     const narrow = options.partitions === "sixths";
+    const rotating = options.symmetry === "rotate";
 
     p.push();
     p.stroke("#3f273a");
@@ -146,15 +168,18 @@ let sketch = function(p) {
     p.noFill();
     p.translate(-0.5, sw_dir[1] * -0.5);
     for (let i = 0; i < grid.length; i++) {
-      const max = narrow ? i + 1 : grid[i].length;
-      for (let j = 0; j < max; j++) {
+      let max = 0;
+      if (rotating) max = narrow ? i : grid[i].length - 1;
+      else max = narrow ? i / 2 : i;
+
+      for (let j = 0; j <= max; j++) {
         p.push();
         p.translate(sw_dir[0] * i * cell_size, sw_dir[1] * i * cell_size);
         p.translate(j * cell_size, 0);
         let g = grid[i][j];
-        if (g.h && (i != j || !narrow)) p.line(0, 0, cell_size, 0);
+        if (g.h && (j < max || (!narrow && rotating))) p.line(0, 0, cell_size, 0);
         if (g.v) p.line(0, 0, sw_dir[0] * cell_size, sw_dir[1] * cell_size);
-        if (g.d && (i != j || !narrow)) p.line(0, 0, se_dir[0] * cell_size, se_dir[1] * cell_size);
+        if (g.d && (j < max || !narrow)) p.line(0, 0, se_dir[0] * cell_size, se_dir[1] * cell_size);
         p.pop();
       }
     }
@@ -167,18 +192,22 @@ let sketch = function(p) {
     const se_dir = [p.cos(p.PI / 3), p.sin(p.PI / 3)];
     const cols = tome.get(options.palette).colors;
     const narrow = options.partitions === "sixths";
+    const rotating = options.symmetry === "rotate";
 
     p.push();
     p.noStroke();
     for (let i = 0; i < grid.length; i++) {
-      const max = narrow ? i + 1 : grid[i].length;
-      for (let j = 0; j < max; j++) {
+      let max = 0;
+      if (rotating) max = narrow ? i : grid[i].length - 1;
+      else max = narrow ? i / 2 : i;
+
+      for (let j = 0; j <= max; j++) {
         p.push();
         p.translate(sw_dir[0] * i * cell_size, sw_dir[1] * i * cell_size);
         p.translate(j * cell_size, 0);
         let g = grid[i][j];
 
-        if (i != j || !narrow) {
+        if (j < max || (!narrow && rotating)) {
           p.fill(cols[g.tc]);
           p.beginShape();
           p.vertex(0, 0);
