@@ -2491,6 +2491,7 @@
     });
   }
   var GUI$1 = GUI;
+  //# sourceMappingURL=dat.gui.module.js.map
 
   var commonjsGlobal = typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
@@ -3033,7 +3034,7 @@
     }
   ];
 
-  const pals = palettes.concat(ranganath, roygbivs, tundra, colourscafe);
+  const pals = palettes.concat(ranganath, roygbivs, tundra, colourscafe, rohlfs);
 
   var palettes$1 = pals.map(p => {
     p.size = p.colors.length;
@@ -3053,13 +3054,16 @@
   }
 
   let sketch = function(p) {
+
     const grid_size = 500;
+    const w = 1200;
+    const h = 1200;
 
     let gui$$1;
     let options;
 
     p.setup = function() {
-      p.createCanvas(1200, 1200);
+      p.createCanvas(w, h);
 
       const seeds = get_seeds();
 
@@ -3211,18 +3215,6 @@
           p.pop();
         }
       }
-      /*
-        p.translate(0.5, p.sin((2 * p.PI) / 3) * 0.5);
-        p.beginShape();
-        p.vertex(0, 0);
-        p.vertex(grid_size / 2, 0);
-        p.vertex(grid_size / 2 + (se_dir[0] * grid_size) / 2, (se_dir[1] * grid_size) / 2);
-        p.vertex(grid_size / 2, se_dir[1] * grid_size);
-        p.vertex(0, se_dir[1] * grid_size);
-        p.vertex((sw_dir[0] * grid_size) / 2, (sw_dir[1] * grid_size) / 2);
-        p.endShape(p.CLOSE);
-        */
-
       p.pop();
     }
 

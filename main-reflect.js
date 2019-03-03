@@ -3,13 +3,17 @@ import generate from "isometric-automata";
 import * as tome from "chromotome";
 
 let sketch = function(p) {
-  const grid_size = 500;
+  const print = false;
+
+  const grid_size = print ? 700 : 500;
+  const w = print ? 2100 : 1200;
+  const h = print ? 2970 : 1200;
 
   let gui;
   let options;
 
   p.setup = function() {
-    p.createCanvas(1200, 1200);
+    p.createCanvas(w, h);
 
     const seeds = get_seeds();
 
@@ -107,7 +111,7 @@ let sketch = function(p) {
 
     p.pop();
 
-    print_seed();
+    if (!print) print_seed();
   }
 
   function setup_grid() {
@@ -161,18 +165,6 @@ let sketch = function(p) {
         p.pop();
       }
     }
-    /*
-      p.translate(0.5, p.sin((2 * p.PI) / 3) * 0.5);
-      p.beginShape();
-      p.vertex(0, 0);
-      p.vertex(grid_size / 2, 0);
-      p.vertex(grid_size / 2 + (se_dir[0] * grid_size) / 2, (se_dir[1] * grid_size) / 2);
-      p.vertex(grid_size / 2, se_dir[1] * grid_size);
-      p.vertex(0, se_dir[1] * grid_size);
-      p.vertex((sw_dir[0] * grid_size) / 2, (sw_dir[1] * grid_size) / 2);
-      p.endShape(p.CLOSE);
-      */
-
     p.pop();
   }
 
