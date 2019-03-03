@@ -3068,13 +3068,13 @@
       const seeds = get_seeds();
 
       options = {
-        resolution: 20,
+        resolution: 14,
         h_seed_str: seeds[0],
         v_seed_str: seeds[1],
         d_seed_str: seeds[2],
         random_init: false,
         colorize: true,
-        stroke: true,
+        stroke: false,
         palette: getRandom().name,
         combination: "simple",
         color_shift: true,

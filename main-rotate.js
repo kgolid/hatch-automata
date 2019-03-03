@@ -18,13 +18,13 @@ let sketch = function(p) {
     const seeds = get_seeds();
 
     options = {
-      resolution: 20,
+      resolution: 14,
       h_seed_str: seeds[0],
       v_seed_str: seeds[1],
       d_seed_str: seeds[2],
       random_init: false,
       colorize: true,
-      stroke: true,
+      stroke: false,
       palette: tome.getRandom().name,
       combination: "simple",
       color_shift: true,
@@ -206,6 +206,7 @@ let sketch = function(p) {
     }
   }
 
+  /*
   function draw_frame() {
     const sw_dir = [p.cos((2 * p.PI) / 3), p.sin((2 * p.PI) / 3)];
     const se_dir = [p.cos(p.PI / 3), p.sin(p.PI / 3)];
@@ -220,6 +221,7 @@ let sketch = function(p) {
     p.vertex((sw_dir[0] * grid_size) / 2, (sw_dir[1] * grid_size) / 2);
     p.endShape(p.CLOSE);
   }
+  */
 
   function print_seed() {
     let seed = options.h_seed_str + "-" + options.v_seed_str + "-" + options.d_seed_str;
