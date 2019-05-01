@@ -144,7 +144,7 @@ let sketch = function(p) {
       dim: { x: options.resolution, y: options.resolution },
       random_init: options.random_init,
       combo: options.combination,
-      palette_size: 4,
+      palette_size: p.min(tome.get(options.palette).colors.length, 4),
       offset: 4
     });
   }
