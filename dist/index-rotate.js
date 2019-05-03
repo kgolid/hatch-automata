@@ -2491,7 +2491,6 @@
     });
   }
   var GUI$1 = GUI;
-  //# sourceMappingURL=dat.gui.module.js.map
 
   var commonjsGlobal = typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
@@ -3123,6 +3122,60 @@
     }
   ];
 
+  var judson = [
+    {
+      name: 'jud_playground',
+      colors: ['#f04924', '#fcce09', '#408ac9'],
+      stroke: '#2e2925',
+      background: '#ffffff'
+    },
+    {
+      name: 'jud_horizon',
+      colors: ['#f8c3df', '#f2e420', '#28b3d0', '#648731', '#ef6a7d'],
+      stroke: '#030305',
+      background: '#f2f0e1'
+    },
+    {
+      name: 'jud_mural',
+      colors: ['#ca3122', '#e5af16', '#4a93a2', '#0e7e39', '#e2b9bd'],
+      stroke: '#1c1616',
+      background: '#e3ded8'
+    },
+    {
+      name: 'jud_cabinet',
+      colors: ['#f0afb7', '#f6bc12', '#1477bb', '#41bb9b'],
+      stroke: '#020508',
+      background: '#d6d6cc'
+    }
+  ];
+
+  var iivonen = [
+    {
+      name: 'iiso_zeitung',
+      colors: ['#ee8067', '#f3df76', '#00a9c0', '#f7ab76'],
+      stroke: '#111a17',
+      background: '#f5efcb'
+    },
+    {
+      name: 'iiso_curcuit',
+      colors: ['#f0865c', '#f2b07b', '#6bc4d2', '#1a3643'],
+      stroke: '#0f1417',
+      background: '#f0f0e8'
+    },
+    {
+      name: 'iiso_airlines',
+      colors: ['#fe765a', '#ffb468', '#4b588f', '#faf1e0'],
+      stroke: '#1c1616',
+      background: '#fae5c8'
+    },
+    {
+      name: 'jud_cabinet',
+      colors: ['#e76c4a', '#f0d967', '#7f8cb6', '#1daeb1', '#ef9640'],
+      stroke: '#000100',
+      background: '#e2ded2'
+    }
+  ];
+
   const palettes = [
     {
       name: 'frozen-rose',
@@ -3172,7 +3225,9 @@
     tundra,
     colourscafe,
     rohlfs,
-    ducci
+    ducci,
+    judson,
+    iivonen
   );
 
   var palettes$1 = pals.map(p => {
