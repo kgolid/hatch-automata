@@ -2013,6 +2013,12 @@
     close: function close() {
       this.closed = true;
     },
+    hide: function hide() {
+      this.domElement.style.display = 'none';
+    },
+    show: function show() {
+      this.domElement.style.display = '';
+    },
     onResize: function onResize() {
       var root = this.getRoot();
       if (root.scrollable) {
@@ -3169,7 +3175,7 @@
       background: '#fae5c8'
     },
     {
-      name: 'jud_cabinet',
+      name: 'iiso_daily',
       colors: ['#e76c4a', '#f0d967', '#7f8cb6', '#1daeb1', '#ef9640'],
       stroke: '#000100',
       background: '#e2ded2'
