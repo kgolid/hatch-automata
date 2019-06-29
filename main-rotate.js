@@ -5,9 +5,9 @@ import * as tome from "chromotome";
 let sketch = function(p) {
   const print = false;
 
-  const grid_size = print ? 700 : 500;
-  const w = print ? 2100 : 1200;
-  const h = print ? 2970 : 1200;
+  const grid_size = print ? 1000 : 500;
+  const w = print ? 4200 : 1200;
+  const h = print ? 5940 : 1200;
 
   let gui;
   let options;

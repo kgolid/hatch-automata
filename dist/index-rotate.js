@@ -2497,7 +2497,6 @@
     });
   }
   var GUI$1 = GUI;
-  //# sourceMappingURL=dat.gui.module.js.map
 
   var commonjsGlobal = typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
@@ -2814,6 +2813,61 @@
   function randomInt(max) {
     return Math.floor(rng() * max);
   }
+
+  var misc = [
+    {
+      name: 'frozen-rose',
+      colors: ['#29368f', '#e9697b', '#1b164d', '#f7d996'],
+      background: '#f2e8e4'
+    },
+    {
+      name: 'winter-night',
+      colors: ['#122438', '#dd672e', '#87c7ca', '#ebebeb'],
+      background: '#ebebeb'
+    },
+    {
+      name: 'saami',
+      colors: ['#eab700', '#e64818', '#2c6393', '#eecfca'],
+      background: '#e7e6e4'
+    },
+    {
+      name: 'knotberry1',
+      colors: ['#20342a', '#f74713', '#686d2c', '#e9b4a6'],
+      background: '#e5ded8'
+    },
+    {
+      name: 'knotberry2',
+      colors: ['#1d3b1a', '#eb4b11', '#e5bc00', '#f29881'],
+      background: '#eae2d0'
+    },
+    {
+      name: 'tricolor',
+      colors: ['#ec643b', '#56b7ab', '#f8cb57', '#1f1e43'],
+      background: '#f7f2df'
+    },
+    {
+      name: 'foxshelter',
+      colors: ['#ff3931', '#007861', '#311f27', '#bab9a4'],
+      background: '#dddddd'
+    },
+    {
+      name: 'hermes',
+      colors: ['#253852', '#51222f', '#b53435', '#ecbb51'],
+      background: '#eeccc2'
+    },
+    {
+      name: 'olympia',
+      colors: ['#ff3250', '#ffb33a', '#008c36', '#0085c6', '#4c4c4c'],
+      stroke: '#0b0b0b',
+      background: '#faf2e5'
+    },
+    {
+      name: 'byrnes',
+      colors: ['#c54514', '#dca215', '#23507f'],
+      stroke: '#0b0b0b',
+      background: '#e8e7d4'
+    }
+  ];
 
   var colourscafe = [
     {
@@ -3152,7 +3206,7 @@
       name: 'jud_cabinet',
       colors: ['#f0afb7', '#f6bc12', '#1477bb', '#41bb9b'],
       stroke: '#020508',
-      background: '#d6d6cc'
+      background: '#e3ded8'
     }
   ];
 
@@ -3183,50 +3237,40 @@
     }
   ];
 
-  const palettes = [
+  var kovecses = [
     {
-      name: 'frozen-rose',
-      colors: ['#29368f', '#e9697b', '#1b164d', '#f7d996'],
-      background: '#f2e8e4'
+      name: 'kov_01',
+      colors: ['#d24c23', '#7ba6bc', '#f0c667', '#ede2b3', '#672b35', '#142a36'],
+      stroke: '#132a37',
+      background: '#108266'
     },
     {
-      name: 'winter-night',
-      colors: ['#122438', '#dd672e', '#87c7ca', '#ebebeb'],
-      background: '#ebebeb'
+      name: 'kov_02',
+      colors: ['#e8dccc', '#e94641', '#eeaeae'],
+      stroke: '#e8dccc',
+      background: '#6c96be'
     },
     {
-      name: 'saami',
-      colors: ['#eab700', '#e64818', '#2c6393', '#eecfca'],
-      background: '#e7e6e4'
+      name: 'kov_03',
+      colors: ['#e3937b', '#d93f1d', '#090d15', '#e6cca7'],
+      stroke: '#090d15',
+      background: '#558947'
     },
     {
-      name: 'knotberry1',
-      colors: ['#20342a', '#f74713', '#686d2c', '#e9b4a6'],
-      background: '#e5ded8'
+      name: 'kov_04',
+      colors: ['#d03718', '#292b36', '#33762f', '#ead7c9', '#ce7028', '#689d8d'],
+      stroke: '#292b36',
+      background: '#deb330'
     },
     {
-      name: 'knotberry2',
-      colors: ['#1d3b1a', '#eb4b11', '#e5bc00', '#f29881'],
-      background: '#eae2d0'
-    },
-    {
-      name: 'tricolor',
-      colors: ['#ec643b', '#56b7ab', '#f8cb57', '#1f1e43'],
-      background: '#f7f2df'
-    },
-    {
-      name: 'foxshelter',
-      colors: ['#ff3931', '#007861', '#311f27', '#bab9a4'],
-      background: '#dddddd'
-    },
-    {
-      name: 'hermes',
-      colors: ['#253852', '#51222f', '#b53435', '#ecbb51'],
-      background: '#eeccc2'
+      name: 'kov_05',
+      colors: ['#de3f1a', '#de9232', '#007158', '#e6cdaf', '#869679'],
+      stroke: '#010006',
+      background: '#7aa5a6'
     }
   ];
 
-  const pals = palettes.concat(
+  const pals = misc.concat(
     ranganath,
     roygbivs,
     tundra,
@@ -3234,24 +3278,26 @@
     rohlfs,
     ducci,
     judson,
-    iivonen
+    iivonen,
+    kovecses
   );
 
-  var palettes$1 = pals.map(p => {
+  var palettes = pals.map(p => {
     p.size = p.colors.length;
     return p;
   });
 
   function getRandom() {
-    return palettes$1[Math.floor(Math.random() * palettes$1.length)];
+    return palettes[Math.floor(Math.random() * palettes.length)];
   }
 
   function get$1(name) {
-    return palettes$1.find(pal => pal.name == name);
+    if (name === undefined) return getRandom();
+    return palettes.find(pal => pal.name == name);
   }
 
   function getNames() {
-    return palettes$1.map(p => p.name);
+    return palettes.map(p => p.name);
   }
 
   let sketch = function(p) {

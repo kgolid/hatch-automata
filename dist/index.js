@@ -2013,6 +2013,12 @@
     close: function close() {
       this.closed = true;
     },
+    hide: function hide() {
+      this.domElement.style.display = 'none';
+    },
+    show: function show() {
+      this.domElement.style.display = '';
+    },
     onResize: function onResize() {
       var root = this.getRoot();
       if (root.scrollable) {

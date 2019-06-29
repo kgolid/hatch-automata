@@ -13,7 +13,7 @@
   "author": "Kjetil Golid",
   "license": "MIT",
   "dependencies": {
-    "chromotome": "^1.6.2",
+    "chromotome": "^1.8.1",
     "dat.gui": "^0.7.6",
     "isometric-automata": "^1.2.0"
   },
