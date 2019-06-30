@@ -12,6 +12,10 @@
   },
   "author": "Kjetil Golid",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/kgolid/hatch-automata.git"
+  },
   "dependencies": {
     "chromotome": "^1.9.2",
     "dat.gui": "^0.7.6",
