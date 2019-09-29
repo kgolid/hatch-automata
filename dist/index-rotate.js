@@ -2772,6 +2772,7 @@
 
   function new_col(a, b, n) {
     if (b === null) return (a + 1) % n;
+    if (n === 5) return combine5(a, b);
     if (n === 4) return combine4(a, b);
     if (n === 3) return combine3(a, b);
     if (n === 2) return a === b ? 1 : 0;
@@ -2791,6 +2792,17 @@
     if (color_combination === 'simple') return simple[y][x];
     if (color_combination === 'strict') return strict[y][x];
     return regular[y][x];
+  }
+
+  function combine5(x, y) {
+    const arr = [
+      [3, 3, 1, 4, 2],
+      [3, 4, 4, 2, 0],
+      [1, 4, 0, 0, 3],
+      [4, 2, 0, 1, 1],
+      [2, 0, 3, 1, 2]
+    ];
+    return arr[y][x];
   }
 
   function resolve(b1, b2, b3, seed) {
@@ -2916,6 +2928,30 @@
       colors: ['#f05e3b', '#ebdec4', '#ffdb00'],
       stroke: '#ebdec4',
       background: '#161616'
+    },
+    {
+      name: 'moir',
+      colors: ['#a49f4f', '#d4501e', '#f7c558', '#ebbaa6'],
+      stroke: '#161716',
+      background: '#f7f4ef'
+    },
+    {
+      name: 'tokyo',
+      colors: ['#d13821', '#1d295b', '#51587d', '#e7e7e7'],
+      stroke: '#0b0e3e',
+      background: '#c7b09e'
+    },
+    {
+      name: 'bauhaus01',
+      colors: ['#ea542f', '#f19c1b', '#4f8ba9'],
+      stroke: '#221e1f',
+      background: '#e7dbc4'
+    },
+    {
+      name: 'bauhaus02',
+      colors: ['#bb2f2a', '#e9b500', '#0165b7'],
+      stroke: '#000000',
+      background: '#e5d6b8'
     }
   ];
 
@@ -3317,6 +3353,61 @@
       colors: ['#de3f1a', '#de9232', '#007158', '#e6cdaf', '#869679'],
       stroke: '#010006',
       background: '#7aa5a6'
+    },
+    {
+      name: 'kov_06',
+      colors: [
+        '#a87c2a',
+        '#bdc9b1',
+        '#f14616',
+        '#ecbfaf',
+        '#017724',
+        '#0e2733',
+        '#2b9ae9'
+      ],
+      stroke: '#292319',
+      background: '#dfd4c1'
+    },
+    {
+      name: 'kov_06b',
+      colors: [
+        '#d57846',
+        '#dfe0cc',
+        '#de442f',
+        '#e7d3c5',
+        '#5ec227',
+        '#302f35',
+        '#63bdb3'
+      ],
+      stroke: '#292319',
+      background: '#dfd4c1'
+    },
+    {
+      name: 'kov_07',
+      colors: ['#c91619', '#fdecd2', '#f4a000', '#4c2653'],
+      stroke: '#111',
+      background: '#89c2cd'
+    }
+  ];
+
+  var tsuchimochi = [
+    {
+      name: 'tsu_arcade',
+      colors: ['#4aad8b', '#e15147', '#f3b551', '#cec8b8', '#d1af84', '#544e47'],
+      stroke: '#251c12',
+      background: '#cfc7b9'
+    },
+    {
+      name: 'tsu_harutan',
+      colors: ['#75974a', '#c83e3c', '#f39140', '#e4ded2', '#f8c5a4', '#434f55'],
+      stroke: '#251c12',
+      background: '#cfc7b9'
+    },
+    {
+      name: 'tsu_akasaka',
+      colors: ['#687f72', '#cc7d6c', '#dec36f', '#dec7af', '#ad8470', '#424637'],
+      stroke: '#251c12',
+      background: '#cfc7b9'
     }
   ];
 
@@ -3356,6 +3447,63 @@
       colors: ['#271f47', '#e7ceb5'],
       stroke: '#271f47',
       background: '#cc2b1c'
+    },
+    {
+      name: 'dt07',
+      colors: ['#6a98a5', '#d24c18'],
+      stroke: '#efebda',
+      background: '#efebda'
+    },
+    {
+      name: 'dt08',
+      colors: ['#5d9d88', '#ebb43b'],
+      stroke: '#efebda',
+      background: '#efebda'
+    },
+    {
+      name: 'dt09',
+      colors: ['#052e57', '#de8d80'],
+      stroke: '#efebda',
+      background: '#efebda'
+    }
+  ];
+
+  var hilda = [
+    {
+      name: 'hilda01',
+      colors: ['#ec5526', '#f4ac12', '#9ebbc1', '#f7f4e2'],
+      stroke: '#1e1b1e',
+      background: '#e7e8d4'
+    },
+    {
+      name: 'hilda02',
+      colors: ['#eb5627', '#eebb20', '#4e9eb8', '#f7f5d0'],
+      stroke: '#201d13',
+      background: '#77c1c0'
+    },
+    {
+      name: 'hilda03',
+      colors: ['#e95145', '#f8b917', '#b8bdc1', '#ffb2a2'],
+      stroke: '#010101',
+      background: '#6b7752'
+    },
+    {
+      name: 'hilda04',
+      colors: ['#e95145', '#f6bf7a', '#589da1', '#f5d9bc'],
+      stroke: '#000001',
+      background: '#f5ede1'
+    },
+    {
+      name: 'hilda05',
+      colors: ['#ff6555', '#ffb58f', '#d8eecf', '#8c4b47', '#bf7f93'],
+      stroke: '#2b0404',
+      background: '#ffda82'
+    },
+    {
+      name: 'hilda06',
+      colors: ['#f75952', '#ffce84', '#74b7b2', '#f6f6f6', '#b17d71'],
+      stroke: '#0e0603',
+      background: '#f6ecd4'
     }
   ];
 
@@ -3369,7 +3517,9 @@
     judson,
     iivonen,
     kovecses,
-    duotone
+    tsuchimochi,
+    duotone,
+    hilda
   );
 
   var palettes = pals.map(p => {

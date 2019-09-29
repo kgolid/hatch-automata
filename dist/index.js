@@ -2772,6 +2772,7 @@
 
   function new_col(a, b, n) {
     if (b === null) return (a + 1) % n;
+    if (n === 5) return combine5(a, b);
     if (n === 4) return combine4(a, b);
     if (n === 3) return combine3(a, b);
     if (n === 2) return a === b ? 1 : 0;
@@ -2791,6 +2792,17 @@
     if (color_combination === 'simple') return simple[y][x];
     if (color_combination === 'strict') return strict[y][x];
     return regular[y][x];
+  }
+
+  function combine5(x, y) {
+    const arr = [
+      [3, 3, 1, 4, 2],
+      [3, 4, 4, 2, 0],
+      [1, 4, 0, 0, 3],
+      [4, 2, 0, 1, 1],
+      [2, 0, 3, 1, 2]
+    ];
+    return arr[y][x];
   }
 
   function resolve(b1, b2, b3, seed) {
