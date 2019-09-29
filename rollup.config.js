@@ -33,5 +33,13 @@ export default [
       format: "umd"
     },
     plugins: [resolve()]
+  },
+  {
+    input: "main-full.js",
+    output: {
+      file: pkg.full,
+      format: "umd"
+    },
+    plugins: [resolve()]
   }
 ];
