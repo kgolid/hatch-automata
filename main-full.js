@@ -22,7 +22,7 @@ let sketch = function(p) {
       d_seed_str: seeds[2],
       random_init: false,
       colorize: true,
-      stroke: true,
+      stroke: false,
       strokeWidth: 1,
       palette: tome.getRandom().name,
       symmetry: "rotate",
@@ -150,7 +150,7 @@ let sketch = function(p) {
       dim: { x: resolution + 8, y: resolution + 8 },
       random_init: options.random_init,
       combo: options.combination,
-      palette_size: p.min(tome.get(options.palette).colors.length, 5),
+      palette_size: p.min(tome.get(options.palette).colors.length, 6),
       offset: 4
     });
   }

@@ -2707,8 +2707,7 @@
         let px = { h: false, v: false, d: false };
         if (i == 0) px.h = true;
         if (j == 0) px.v = true;
-        if (random_init && (i == 0 || j == 0))
-          px = { h: flip(), v: flip(), d: flip() };
+        if (random_init && (i == 0 || j == 0)) px = { h: flip(), v: flip(), d: flip() };
         row.push(px);
       }
       grid.push(row);
@@ -2718,24 +2717,9 @@
       for (let j = 0; j < grid[i].length; j++) {
         const px = grid[i][j];
         if (i > 0 && j > 0) {
-          px.h = resolve(
-            grid[i][j - 1].h,
-            grid[i - 1][j].v,
-            grid[i - 1][j - 1].d,
-            h_seed
-          );
-          px.v = resolve(
-            grid[i][j - 1].h,
-            grid[i - 1][j].v,
-            grid[i - 1][j - 1].d,
-            v_seed
-          );
-          px.d = resolve(
-            grid[i][j - 1].h,
-            grid[i - 1][j].v,
-            grid[i - 1][j - 1].d,
-            d_seed
-          );
+          px.h = resolve(grid[i][j - 1].h, grid[i - 1][j].v, grid[i - 1][j - 1].d, h_seed);
+          px.v = resolve(grid[i][j - 1].h, grid[i - 1][j].v, grid[i - 1][j - 1].d, v_seed);
+          px.d = resolve(grid[i][j - 1].h, grid[i - 1][j].v, grid[i - 1][j - 1].d, d_seed);
         }
         colorize(j, i, random_init, palette_size);
       }
@@ -2761,18 +2745,17 @@
     if (!cell.d) {
       if (cell.h && !cell.v) cell.tc = cell.lc;
       if (!cell.h && cell.v) cell.lc = cell.tc;
-      if (cell.h && cell.v)
-        cell.tc = cell.lc = new_col(topcol, leftcol, palette_size);
+      if (cell.h && cell.v) cell.tc = cell.lc = new_col(topcol, leftcol, palette_size);
     }
     if (cell.d) {
-      if (cell.h)
-        cell.tc = new_col(topcol, cell.lc ? cell.lc : null, palette_size);
+      if (cell.h) cell.tc = new_col(topcol, cell.lc ? cell.lc : null, palette_size);
       if (cell.v) cell.lc = new_col(leftcol, cell.tc, palette_size);
     }
   }
 
   function new_col(a, b, n) {
     if (b === null) return (a + 1) % n;
+    if (n === 6) return combine6(a, b);
     if (n === 5) return combine5(a, b);
     if (n === 4) return combine4(a, b);
     if (n === 3) return combine3(a, b);
@@ -2782,14 +2765,33 @@
   // ---- UTILS ----
 
   function combine3(x, y) {
-    const arr = [[1, 2, 1], [2, 2, 0], [1, 0, 0]];
+    const arr = [
+      [1, 2, 1],
+      [2, 2, 0],
+      [1, 0, 0]
+    ];
     return arr[y][x];
   }
 
   function combine4(x, y) {
-    const simple = [[1, 2, 1, 1], [2, 0, 0, 0], [1, 0, 0, 0], [1, 0, 0, 0]];
-    const strict = [[1, 2, 3, 1], [2, 3, 0, 2], [3, 0, 3, 0], [1, 2, 0, 1]];
-    const regular = [[1, 3, 1, 2], [3, 2, 0, 0], [3, 0, 3, 1], [2, 2, 1, 0]];
+    const simple = [
+      [1, 2, 1, 1],
+      [2, 0, 0, 0],
+      [1, 0, 0, 0],
+      [1, 0, 0, 0]
+    ];
+    const strict = [
+      [1, 2, 3, 1],
+      [2, 3, 0, 2],
+      [3, 0, 3, 0],
+      [1, 2, 0, 1]
+    ];
+    const regular = [
+      [1, 3, 1, 2],
+      [3, 2, 0, 0],
+      [3, 0, 3, 1],
+      [2, 2, 1, 0]
+    ];
     if (color_combination === 'simple') return simple[y][x];
     if (color_combination === 'strict') return strict[y][x];
     return regular[y][x];
@@ -2804,6 +2806,19 @@
       [2, 0, 3, 1, 2]
     ];
     return arr[y][x];
+  }
+
+  function combine6(x, y) {
+    const arr = [
+      [5, 2, 3, 4, 5, 1],
+      [2, 3, 4, 5, 0, 2],
+      [3, 4, 5, 0, 1, 3],
+      [4, 5, 0, 1, 2, 4],
+      [5, 0, 1, 2, 3, 0],
+      [1, 2, 3, 4, 0, 1]
+    ];
+
+    return arr[x][y];
   }
 
   function resolve(b1, b2, b3, seed) {
@@ -2900,15 +2915,7 @@
     },
     {
       name: 'empusa',
-      colors: [
-        '#c92a28',
-        '#e69301',
-        '#1f8793',
-        '#13652b',
-        '#e7d8b0',
-        '#48233b',
-        '#e3b3ac'
-      ],
+      colors: ['#c92a28', '#e69301', '#1f8793', '#13652b', '#e7d8b0', '#48233b', '#e3b3ac'],
       stroke: '#1a1a1a',
       background: '#f0f0f2'
     },
@@ -2937,22 +2944,40 @@
       background: '#f7f4ef'
     },
     {
-      name: 'tokyo',
-      colors: ['#d13821', '#1d295b', '#51587d', '#e7e7e7'],
-      stroke: '#0b0e3e',
-      background: '#c7b09e'
-    },
-    {
-      name: 'bauhaus01',
-      colors: ['#ea542f', '#f19c1b', '#4f8ba9'],
+      name: 'sprague',
+      colors: ['#ec2f28', '#f8cd28', '#1e95bb', '#fbaab3', '#fcefdf'],
       stroke: '#221e1f',
-      background: '#e7dbc4'
+      background: '#fcefdf'
     },
     {
-      name: 'bauhaus02',
-      colors: ['#bb2f2a', '#e9b500', '#0165b7'],
-      stroke: '#000000',
-      background: '#e5d6b8'
+      name: 'bloomberg',
+      colors: ['#ff5500', '#f4c145', '#144714', '#2f04fc', '#e276af'],
+      stroke: '#000',
+      background: '#fff3dd'
+    },
+    {
+      name: 'revolucion',
+      colors: ['#ed555d', '#fffcc9', '#41b797', '#eda126', '#7b5770'],
+      stroke: '#fffcc9',
+      background: '#2d1922'
+    },
+    {
+      name: 'sneaker',
+      colors: ['#e8165b', '#401e38', '#66c3b4', '#ee7724', '#584098'],
+      stroke: '#401e38',
+      background: '#ffffff'
+    },
+    {
+      name: 'miradors',
+      colors: ['#ff6936', '#fddc3f', '#0075ca', '#00bb70'],
+      stroke: '#ffffff',
+      background: '#020202'
+    },
+    {
+      name: 'kaffeprat',
+      colors: ['#BCAA8C', '#D8CDBE', '#484A42', '#746B58', '#9A8C73'],
+      stroke: '#000',
+      background: '#fff'
     }
   ];
 
@@ -3542,6 +3567,39 @@
     }
   ];
 
+  var jung = [
+    {
+      name: 'jung_bird',
+      colors: ['#fc3032', '#fed530', '#33c3fb', '#ff7bac', '#fda929'],
+      stroke: '#000000',
+      background: '#ffffff'
+    },
+    {
+      name: 'jung_horse',
+      colors: ['#e72e81', '#f0bf36', '#3056a2'],
+      stroke: '#000000',
+      background: '#ffffff'
+    },
+    {
+      name: 'jung_croc',
+      colors: ['#f13274', '#eed03e', '#405e7f', '#19a198'],
+      stroke: '#000000',
+      background: '#ffffff'
+    },
+    {
+      name: 'jung_hippo',
+      colors: ['#ff7bac', '#ff921e', '#3ea8f5', '#7ac943'],
+      stroke: '#000000',
+      background: '#ffffff'
+    },
+    {
+      name: 'jung_wolf',
+      colors: ['#e51c39', '#f1b844', '#36c4b7', '#666666'],
+      stroke: '#000000',
+      background: '#ffffff'
+    }
+  ];
+
   const pals = misc.concat(
     ranganath,
     roygbivs,
@@ -3555,7 +3613,8 @@
     tsuchimochi,
     duotone,
     hilda,
-    spatial
+    spatial,
+    jung
   );
 
   var palettes = pals.map(p => {
@@ -3596,7 +3655,7 @@
         d_seed_str: seeds[2],
         random_init: false,
         colorize: true,
-        stroke: true,
+        stroke: false,
         strokeWidth: 1,
         palette: getRandom().name,
         symmetry: "rotate",
@@ -3724,7 +3783,7 @@
         dim: { x: resolution + 8, y: resolution + 8 },
         random_init: options.random_init,
         combo: options.combination,
-        palette_size: p.min(get$1(options.palette).colors.length, 5),
+        palette_size: p.min(get$1(options.palette).colors.length, 6),
         offset: 4
       });
     }
