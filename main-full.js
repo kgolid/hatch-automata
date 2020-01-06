@@ -21,6 +21,7 @@ let sketch = function(p) {
       v_seed_str: seeds[1],
       d_seed_str: seeds[2],
       random_init: false,
+      init_seed: randomInt(5000).toString(),
       colorize: true,
       strokeWidth: 1,
       palette: tome.getRandom().name,
@@ -29,6 +30,7 @@ let sketch = function(p) {
       color_shift: true,
       partitions: "sixths",
       randomize: () => randomize()
+      randomize_inits: () => randomize_inits(),
     };
 
     gui = new dat.GUI();
@@ -74,6 +76,9 @@ let sketch = function(p) {
     f2.add(options, "random_init")
       .name("Random init vals")
       .onChange(run);
+    f2.add(options, "init_seed").name("Init seed");
+    f2.add(options, "randomize_inits").name("Randomize");
+
 
     run();
   };
@@ -90,6 +95,12 @@ let sketch = function(p) {
     options.h_seed_str = randomInt(Math.pow(2, 8));
     options.v_seed_str = randomInt(Math.pow(2, 8));
     options.d_seed_str = randomInt(Math.pow(2, 8));
+    gui.updateDisplay();
+    run();
+  }
+
+  function randomize_inits() {
+    options.init_seed = randomInt(5000);
     gui.updateDisplay();
     run();
   }
@@ -144,6 +155,7 @@ let sketch = function(p) {
       seeds: { h: options.h_seed_str, v: options.v_seed_str, d: options.d_seed_str },
       dim: { x: resolution + 8, y: resolution + 8 },
       random_init: options.random_init,
+      init_seed: options.init_seed,
       combo: options.combination,
       palette_size: p.min(tome.get(options.palette).colors.length, 6),
       offset: 4
