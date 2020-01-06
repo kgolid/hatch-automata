@@ -29,8 +29,9 @@ let sketch = function(p) {
       combination: "ca",
       color_shift: true,
       partitions: "sixths",
-      randomize: () => randomize()
+      randomize_divs: () => randomize_divs(),
       randomize_inits: () => randomize_inits(),
+      redraw: () => run()
     };
 
     gui = new dat.GUI();
@@ -51,27 +52,26 @@ let sketch = function(p) {
     f0.add(options, "combination", ["simple", "strict", "regular", "ca"])
       .name("Color combination")
       .onChange(run);
-    f0.add(options, "symmetry", ["none", "rotate", "reflect"])
+    let symm_folder = gui.addFolder("Symmetry");
+    symm_folder
+      .add(options, "symmetry", ["none", "rotate", "reflect"])
       .name("Symmetry type")
       .onChange(run);
-    f0.add(options, "partitions", ["sixths", "thirds"])
+    symm_folder
+      .add(options, "partitions", ["sixths", "thirds"])
       .name("Partitions")
       .onChange(run);
-    f0.add(options, "color_shift")
+    symm_folder
+      .add(options, "color_shift")
       .name("Color shift")
       .onChange(run);
-    let f1 = gui.addFolder("Seeds");
-    f1.add(options, "h_seed_str")
-      .name("H seed")
-      .onChange(run);
-    f1.add(options, "v_seed_str")
-      .name("V seed")
-      .onChange(run);
-    f1.add(options, "d_seed_str")
-      .name("D seed")
-      .onChange(run);
-    f1.add(options, "randomize").name("Randomize");
-    f1.open();
+    let divider_folder = gui.addFolder("Dividers");
+    divider_folder.add(options, "h_seed_str").name("Horizontal seed");
+    divider_folder.add(options, "v_seed_str").name("Vertical seed");
+    divider_folder.add(options, "d_seed_str").name("Diagonal seed");
+    divider_folder.add(options, "randomize_divs").name("Randomize");
+    divider_folder.open();
+
     let f2 = gui.addFolder("Random elements");
     f2.add(options, "random_init")
       .name("Random init vals")
@@ -79,6 +79,11 @@ let sketch = function(p) {
     f2.add(options, "init_seed").name("Init seed");
     f2.add(options, "randomize_inits").name("Randomize");
 
+    let control_folder = gui.addFolder("Control");
+    control_folder.add(options, "redraw").name("Redraw");
+    control_folder.open();
+
+    gui.width = 400;
 
     run();
   };
@@ -91,7 +96,7 @@ let sketch = function(p) {
       );
   };
 
-  function randomize() {
+  function randomize_divs() {
     options.h_seed_str = randomInt(Math.pow(2, 8));
     options.v_seed_str = randomInt(Math.pow(2, 8));
     options.d_seed_str = randomInt(Math.pow(2, 8));
