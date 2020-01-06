@@ -24,7 +24,7 @@ let sketch = function(p) {
       colorize: true,
       strokeWidth: 1,
       palette: tome.getRandom().name,
-      symmetry: "rotate",
+      symmetry: "none",
       combination: "ca",
       color_shift: true,
       partitions: "sixths",
@@ -102,7 +102,6 @@ let sketch = function(p) {
 
     p.push();
     p.background(bg ? bg : "#d5cda1");
-
     if (options.symmetry === "none") {
       p.translate(frame_dim, frame_dim);
       draw_grid(grid);
@@ -119,7 +118,7 @@ let sketch = function(p) {
       }
       if (options.strokeWidth > 0) {
         p.noFill();
-        p.stroke(strokeCol ? strokeCol : "#3f273a");
+        p.stroke(strokeCol ? strokeCol : "#000");
         p.strokeWeight(options.strokeWidth);
         if (options.symmetry === "rotate") stroke_hex(grid);
         else {
