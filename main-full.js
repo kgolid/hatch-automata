@@ -3,15 +3,15 @@ import generate from "isometric-automata";
 import * as tome from "chromotome";
 
 let sketch = function(p) {
-  const frame_dim = 30;
-  const grid_size = 1315;
+  const frame_dim = 0;
+  const grid_size = 1400;
 
   let gui;
   let options;
 
   p.setup = function() {
     p.pixelDensity(4);
-    p.createCanvas(1315, 930);
+    p.createCanvas(1400, 1000);
 
     const seeds = get_seeds();
 
