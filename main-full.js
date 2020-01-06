@@ -22,7 +22,6 @@ let sketch = function(p) {
       d_seed_str: seeds[2],
       random_init: false,
       colorize: true,
-      stroke: false,
       strokeWidth: 1,
       palette: tome.getRandom().name,
       symmetry: "rotate",
@@ -41,10 +40,7 @@ let sketch = function(p) {
     f0.add(options, "colorize")
       .name("Toggle color")
       .onChange(run);
-    f0.add(options, "stroke")
-      .name("Toggle stroke")
-      .onChange(run);
-    f0.add(options, "strokeWidth", 1, 5, 1)
+    f0.add(options, "strokeWidth", 0, 5, 1)
       .name("Stroke width")
       .onChange(run);
     f0.add(options, "palette", tome.getNames())
@@ -121,7 +117,7 @@ let sketch = function(p) {
           p.scale(1, -1);
         }
       }
-      if (options.stroke) {
+      if (options.strokeWidth > 0) {
         p.noFill();
         p.stroke(strokeCol ? strokeCol : "#3f273a");
         p.strokeWeight(options.strokeWidth);
@@ -138,7 +134,7 @@ let sketch = function(p) {
     p.pop();
 
     draw_frame("#fff");
-    if (options.stroke) {
+    if (options.strokeWidth > 0) {
       draw_frame_stroke(strokeCol ? strokeCol : "#3f273a", options.strokeWidth);
     }
   }
@@ -300,7 +296,7 @@ let sketch = function(p) {
       }
     }
 
-    if (options.stroke) {
+    if (options.strokeWidth > 0) {
       p.noFill();
       p.stroke(strokeCol ? strokeCol : "#3f273a");
       p.strokeWeight(options.strokeWidth);
