@@ -25,7 +25,7 @@ let sketch = function(p) {
       strokeWidth: 1,
       palette: tome.getRandom().name,
       symmetry: "rotate",
-      combination: "regular",
+      combination: "ca",
       color_shift: true,
       partitions: "sixths",
       randomize: () => randomize()
@@ -46,7 +46,7 @@ let sketch = function(p) {
     f0.add(options, "palette", tome.getNames())
       .name("Color palette")
       .onChange(run);
-    f0.add(options, "combination", ["simple", "strict", "regular"])
+    f0.add(options, "combination", ["simple", "strict", "regular", "ca"])
       .name("Color combination")
       .onChange(run);
     f0.add(options, "symmetry", ["none", "rotate", "reflect"])
