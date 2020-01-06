@@ -2681,9 +2681,81 @@
   });
   var seedRandom_1 = seedRandom.resetGlobal;
 
+  // Get bit at pos(ition) for num(ber)
+  const get_bit = (num, base, size, pos) => {
+    return parseInt(
+      Number(num)
+        .toString(base)
+        .padStart(Math.pow(base, size), 0)
+        .split('')
+        .reverse()
+        .join('')
+        .charAt(pos)
+    );
+  };
+
+  const combine = (bs, base) => {
+    return parseInt(bs.join(''), base);
+  };
+
+  // Returns given number in the form of a tertiary function (a rule)
+  const get_rule = (base, num) => (...bs) =>
+    get_bit(num, base, bs.length, combine(bs, base));
+
+  const get_random_rule = (base, arity) => {
+    const n = Math.floor(Math.random() * Math.pow(base, Math.pow(base, arity)));
+    console.log(n);
+    return get_rule(base, n);
+  };
+
+  function get_ca_combine_function(n) {
+    return get_random_rule(n, 2);
+  }
+
+  function get_combine_function(n) {
+    return (a, b) => combination_tables[n - 2][b][a];
+  }
+
+  const table2 = [
+    [1, 1],
+    [0, 0]
+  ];
+
+  const table3 = [
+    [2, 2, 1],
+    [2, 0, 0],
+    [1, 0, 1]
+  ];
+
+  const table4 = [
+    [3, 2, 1, 1],
+    [2, 0, 3, 2],
+    [3, 3, 1, 0],
+    [1, 0, 0, 2]
+  ];
+
+  const table5 = [
+    [4, 3, 3, 1, 2],
+    [3, 0, 4, 4, 2],
+    [3, 4, 1, 0, 0],
+    [1, 4, 0, 2, 1],
+    [2, 2, 0, 1, 3]
+  ];
+
+  const table6 = [
+    [5, 2, 4, 1, 1, 3],
+    [4, 0, 3, 5, 2, 2],
+    [3, 5, 1, 4, 0, 3],
+    [4, 4, 0, 2, 5, 1],
+    [2, 5, 5, 1, 3, 0],
+    [1, 3, 0, 0, 2, 4]
+  ];
+
+  const combination_tables = [table2, table3, table4, table5, table6];
+
   let rng;
   let grid;
-  let color_combination;
+  let combine_function;
 
   function index$1({
     seeds,
@@ -2694,9 +2766,13 @@
     combo = 'simple',
     offset = 1
   }) {
-    rng = init_seed ? seedRandom('init_seed') : seedRandom();
+    rng = init_seed ? seedRandom(init_seed) : seedRandom();
     grid = [];
-    color_combination = combo;
+    combine_function =
+      combo === 'ca'
+        ? get_ca_combine_function(palette_size)
+        : get_combine_function(palette_size);
+
     const h_seed = binaryArray(8, seeds.h);
     const v_seed = binaryArray(8, seeds.v);
     const d_seed = binaryArray(8, seeds.d);
@@ -2755,70 +2831,7 @@
 
   function new_col(a, b, n) {
     if (b === null) return (a + 1) % n;
-    if (n === 6) return combine6(a, b);
-    if (n === 5) return combine5(a, b);
-    if (n === 4) return combine4(a, b);
-    if (n === 3) return combine3(a, b);
-    if (n === 2) return a === b ? 1 : 0;
-  }
-
-  // ---- UTILS ----
-
-  function combine3(x, y) {
-    const arr = [
-      [1, 2, 1],
-      [2, 2, 0],
-      [1, 0, 0]
-    ];
-    return arr[y][x];
-  }
-
-  function combine4(x, y) {
-    const simple = [
-      [1, 2, 1, 1],
-      [2, 0, 0, 0],
-      [1, 0, 0, 0],
-      [1, 0, 0, 0]
-    ];
-    const strict = [
-      [1, 2, 3, 1],
-      [2, 3, 0, 2],
-      [3, 0, 3, 0],
-      [1, 2, 0, 1]
-    ];
-    const regular = [
-      [1, 3, 1, 2],
-      [3, 2, 0, 0],
-      [3, 0, 3, 1],
-      [2, 2, 1, 0]
-    ];
-    if (color_combination === 'simple') return simple[y][x];
-    if (color_combination === 'strict') return strict[y][x];
-    return regular[y][x];
-  }
-
-  function combine5(x, y) {
-    const arr = [
-      [3, 3, 1, 4, 2],
-      [3, 4, 4, 2, 0],
-      [1, 4, 0, 0, 3],
-      [4, 2, 0, 1, 1],
-      [2, 0, 3, 1, 2]
-    ];
-    return arr[y][x];
-  }
-
-  function combine6(x, y) {
-    const arr = [
-      [5, 2, 3, 4, 5, 1],
-      [2, 3, 4, 5, 0, 2],
-      [3, 4, 5, 0, 1, 3],
-      [4, 5, 0, 1, 2, 4],
-      [5, 0, 1, 2, 3, 0],
-      [1, 2, 3, 4, 0, 1]
-    ];
-
-    return arr[x][y];
+    return combine_function(a, b);
   }
 
   function resolve(b1, b2, b3, seed) {
@@ -3600,6 +3613,57 @@
     }
   ];
 
+  var system = [
+    {
+      name: 'system.#01',
+      colors: ['#ff4242', '#fec101', '#1841fe', '#fcbdcc', '#82e9b5'],
+      stroke: '#000',
+      background: '#fff'
+    },
+    {
+      name: 'system.#02',
+      colors: ['#ff4242', '#ffd480', '#1e365d', '#edb14c', '#418dcd'],
+      stroke: '#000',
+      background: '#fff'
+    },
+    {
+      name: 'system.#03',
+      colors: ['#f73f4a', '#d3e5eb', '#002c3e', '#1aa1b1', '#ec6675'],
+      stroke: '#110b09',
+      background: '#fff'
+    },
+    {
+      name: 'system.#04',
+      colors: ['#e31f4f', '#f0ac3f', '#18acab', '#26265a', '#ea7d81', '#dcd9d0'],
+      stroke: '#26265a',
+      backgrund: '#dcd9d0'
+    },
+    {
+      name: 'system.#05',
+      colors: ['#db4549', '#d1e1e1', '#3e6a90', '#2e3853', '#a3c9d3'],
+      stroke: '#000',
+      background: '#fff'
+    },
+    {
+      name: 'system.#06',
+      colors: ['#e5475c', '#95b394', '#28343b', '#f7c6a3', '#eb8078'],
+      stroke: '#000',
+      background: '#fff'
+    },
+    {
+      name: 'system.#07',
+      colors: ['#d75c49', '#f0efea', '#509da4'],
+      stroke: '#000',
+      background: '#fff'
+    },
+    {
+      name: 'system.#08',
+      colors: ['#f6625a', '#92b29f', '#272c3f'],
+      stroke: '#000',
+      background: '#fff'
+    }
+  ];
+
   const pals = misc.concat(
     ranganath,
     roygbivs,
@@ -3614,7 +3678,8 @@
     duotone,
     hilda,
     spatial,
-    jung
+    jung,
+    system
   );
 
   var palettes = pals.map(p => {
@@ -3636,15 +3701,15 @@
   }
 
   let sketch = function(p) {
-    const frame_dim = 30;
-    const grid_size = 1315;
+    const frame_dim = 0;
+    const grid_size = 1400;
 
     let gui$$1;
     let options;
 
     p.setup = function() {
       p.pixelDensity(4);
-      p.createCanvas(1315, 930);
+      p.createCanvas(1400, 1000);
 
       const seeds = get_seeds();
 
@@ -3654,15 +3719,17 @@
         v_seed_str: seeds[1],
         d_seed_str: seeds[2],
         random_init: false,
+        init_seed: randomInt(5000).toString(),
         colorize: true,
-        stroke: false,
         strokeWidth: 1,
         palette: getRandom().name,
-        symmetry: "rotate",
-        combination: "regular",
+        symmetry: "none",
+        combination: "ca",
         color_shift: true,
         partitions: "sixths",
-        randomize: () => randomize()
+        randomize_divs: () => randomize_divs(),
+        randomize_inits: () => randomize_inits(),
+        redraw: () => run()
       };
 
       gui$$1 = new GUI$1();
@@ -3674,43 +3741,47 @@
       f0.add(options, "colorize")
         .name("Toggle color")
         .onChange(run);
-      f0.add(options, "stroke")
-        .name("Toggle stroke")
-        .onChange(run);
-      f0.add(options, "strokeWidth", 1, 5, 1)
+      f0.add(options, "strokeWidth", 0, 5, 1)
         .name("Stroke width")
         .onChange(run);
       f0.add(options, "palette", getNames())
         .name("Color palette")
         .onChange(run);
-      f0.add(options, "combination", ["simple", "strict", "regular"])
+      f0.add(options, "combination", ["simple", "strict", "regular", "ca"])
         .name("Color combination")
         .onChange(run);
-      f0.add(options, "symmetry", ["none", "rotate", "reflect"])
+      let symm_folder = gui$$1.addFolder("Symmetry");
+      symm_folder
+        .add(options, "symmetry", ["none", "rotate", "reflect"])
         .name("Symmetry type")
         .onChange(run);
-      f0.add(options, "partitions", ["sixths", "thirds"])
+      symm_folder
+        .add(options, "partitions", ["sixths", "thirds"])
         .name("Partitions")
         .onChange(run);
-      f0.add(options, "color_shift")
+      symm_folder
+        .add(options, "color_shift")
         .name("Color shift")
         .onChange(run);
-      let f1 = gui$$1.addFolder("Seeds");
-      f1.add(options, "h_seed_str")
-        .name("H seed")
-        .onChange(run);
-      f1.add(options, "v_seed_str")
-        .name("V seed")
-        .onChange(run);
-      f1.add(options, "d_seed_str")
-        .name("D seed")
-        .onChange(run);
-      f1.add(options, "randomize").name("Randomize");
-      f1.open();
+      let divider_folder = gui$$1.addFolder("Dividers");
+      divider_folder.add(options, "h_seed_str").name("Horizontal seed");
+      divider_folder.add(options, "v_seed_str").name("Vertical seed");
+      divider_folder.add(options, "d_seed_str").name("Diagonal seed");
+      divider_folder.add(options, "randomize_divs").name("Randomize");
+      divider_folder.open();
+
       let f2 = gui$$1.addFolder("Random elements");
       f2.add(options, "random_init")
         .name("Random init vals")
         .onChange(run);
+      f2.add(options, "init_seed").name("Init seed");
+      f2.add(options, "randomize_inits").name("Randomize");
+
+      let control_folder = gui$$1.addFolder("Control");
+      control_folder.add(options, "redraw").name("Redraw");
+      control_folder.open();
+
+      gui$$1.width = 400;
 
       run();
     };
@@ -3723,10 +3794,16 @@
         );
     };
 
-    function randomize() {
+    function randomize_divs() {
       options.h_seed_str = randomInt(Math.pow(2, 8));
       options.v_seed_str = randomInt(Math.pow(2, 8));
       options.d_seed_str = randomInt(Math.pow(2, 8));
+      gui$$1.updateDisplay();
+      run();
+    }
+
+    function randomize_inits() {
+      options.init_seed = randomInt(5000);
       gui$$1.updateDisplay();
       run();
     }
@@ -3739,7 +3816,6 @@
 
       p.push();
       p.background(bg ? bg : "#d5cda1");
-
       if (options.symmetry === "none") {
         p.translate(frame_dim, frame_dim);
         draw_grid(grid);
@@ -3754,9 +3830,9 @@
             p.scale(1, -1);
           }
         }
-        if (options.stroke) {
+        if (options.strokeWidth > 0) {
           p.noFill();
-          p.stroke(strokeCol ? strokeCol : "#3f273a");
+          p.stroke(strokeCol ? strokeCol : "#000");
           p.strokeWeight(options.strokeWidth);
           if (options.symmetry === "rotate") stroke_hex(grid);
           else {
@@ -3771,7 +3847,7 @@
       p.pop();
 
       draw_frame("#fff");
-      if (options.stroke) {
+      if (options.strokeWidth > 0) {
         draw_frame_stroke(strokeCol ? strokeCol : "#3f273a", options.strokeWidth);
       }
     }
@@ -3782,6 +3858,7 @@
         seeds: { h: options.h_seed_str, v: options.v_seed_str, d: options.d_seed_str },
         dim: { x: resolution + 8, y: resolution + 8 },
         random_init: options.random_init,
+        init_seed: options.init_seed,
         combo: options.combination,
         palette_size: p.min(get$1(options.palette).colors.length, 6),
         offset: 4
@@ -3933,7 +4010,7 @@
         }
       }
 
-      if (options.stroke) {
+      if (options.strokeWidth > 0) {
         p.noFill();
         p.stroke(strokeCol ? strokeCol : "#3f273a");
         p.strokeWeight(options.strokeWidth);
