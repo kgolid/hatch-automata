@@ -2497,7 +2497,6 @@
     });
   }
   var GUI$1 = GUI;
-  //# sourceMappingURL=dat.gui.module.js.map
 
   var commonjsGlobal = typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
@@ -2702,11 +2701,8 @@
   const get_rule = (base, num) => (...bs) =>
     get_bit(num, base, bs.length, combine(bs, base));
 
-  const get_random_rule = (base, arity) => {
-    const n = Math.floor(Math.random() * Math.pow(base, Math.pow(base, arity)));
-    console.log(n);
-    return get_rule(base, n);
-  };
+  const get_random_rule = (base, arity) =>
+    get_rule(base, Math.floor(Math.random() * Math.pow(base, Math.pow(base, arity))));
 
   function get_ca_combine_function(n) {
     return get_random_rule(n, 2);

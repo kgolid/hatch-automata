@@ -25,12 +25,14 @@ let sketch = function(p) {
       colorize: true,
       strokeWidth: 3,
       palette: "system.#05",
+      random_color_combo: false,
+      color_seed: randomInt(5000).toString(),
       symmetry: "none",
-      combination: "ca",
       color_shift: true,
       partitions: "sixths",
       randomize_divs: () => randomize_divs(),
       randomize_inits: () => randomize_inits(),
+      randomize_colors: () => randomize_colors(),
       redraw: () => run()
     };
 
@@ -40,18 +42,11 @@ let sketch = function(p) {
     f0.add(options, "resolution", 4, 60, 2)
       .name("Resolution")
       .onChange(run);
-    f0.add(options, "colorize")
-      .name("Toggle color")
-      .onChange(run);
     f0.add(options, "strokeWidth", 0, 5, 1)
       .name("Stroke width")
       .onChange(run);
-    f0.add(options, "palette", tome.getNames())
-      .name("Color palette")
-      .onChange(run);
-    f0.add(options, "combination", ["simple", "strict", "regular", "ca"])
-      .name("Color combination")
-      .onChange(run);
+    f0.open();
+
     let symm_folder = gui.addFolder("Symmetry");
     symm_folder
       .add(options, "symmetry", ["none", "rotate", "reflect"])
@@ -65,6 +60,8 @@ let sketch = function(p) {
       .add(options, "color_shift")
       .name("Color shift")
       .onChange(run);
+    symm_folder.open();
+
     let divider_folder = gui.addFolder("Dividers");
     divider_folder.add(options, "h_seed_str").name("Horizontal seed");
     divider_folder.add(options, "v_seed_str").name("Vertical seed");
@@ -72,18 +69,37 @@ let sketch = function(p) {
     divider_folder.add(options, "randomize_divs").name("Randomize");
     divider_folder.open();
 
-    let f2 = gui.addFolder("Random elements");
-    f2.add(options, "random_init")
-      .name("Random init vals")
+    let color_folder = gui.addFolder("Colors");
+    color_folder
+      .add(options, "colorize")
+      .name("Toggle color")
       .onChange(run);
-    f2.add(options, "init_seed").name("Init seed");
-    f2.add(options, "randomize_inits").name("Randomize");
+    color_folder
+      .add(options, "palette", tome.getNames())
+      .name("Color palette")
+      .onChange(run);
+    color_folder
+      .add(options, "random_color_combo")
+      .name("Use seed")
+      .onChange(run);
+    color_folder.add(options, "color_seed").name("Seed");
+    color_folder.add(options, "randomize_colors").name("Randomize seed");
+    color_folder.open();
+
+    let initials_folder = gui.addFolder("Initial Conditions");
+    initials_folder
+      .add(options, "random_init")
+      .name("Use seed")
+      .onChange(run);
+    initials_folder.add(options, "init_seed").name("Seed");
+    initials_folder.add(options, "randomize_inits").name("Randomize seed");
+    initials_folder.open();
 
     let control_folder = gui.addFolder("Control");
     control_folder.add(options, "redraw").name("Redraw");
     control_folder.open();
 
-    gui.width = 400;
+    gui.width = 300;
 
     run();
   };
@@ -106,6 +122,12 @@ let sketch = function(p) {
 
   function randomize_inits() {
     options.init_seed = randomInt(5000);
+    gui.updateDisplay();
+    run();
+  }
+
+  function randomize_colors() {
+    options.color_seed = randomInt(5000);
     gui.updateDisplay();
     run();
   }
@@ -161,9 +183,10 @@ let sketch = function(p) {
       dim: { x: resolution + 8, y: resolution + 8 },
       random_init: options.random_init,
       init_seed: options.init_seed,
-      combo: options.combination,
+      combo: options.random_color_combo ? "ca" : "simple",
       palette_size: p.min(tome.get(options.palette).colors.length, 6),
-      offset: 4
+      offset: 2,
+      color_seed: options.color_seed
     });
   }
 

@@ -20,7 +20,7 @@
   "dependencies": {
     "chromotome": "^1.16.1",
     "dat.gui": "^0.7.6",
-    "isometric-automata": "^2.0.2"
+    "isometric-automata": "^2.0.3"
   },
   "devDependencies": {
     "rollup": "^0.67.4",
