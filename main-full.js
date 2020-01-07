@@ -16,15 +16,15 @@ let sketch = function(p) {
     const seeds = get_seeds();
 
     options = {
-      resolution: 13,
+      resolution: 15,
       h_seed_str: seeds[0],
       v_seed_str: seeds[1],
       d_seed_str: seeds[2],
-      random_init: false,
+      random_init: true,
       init_seed: randomInt(5000).toString(),
       colorize: true,
-      strokeWidth: 1,
-      palette: tome.getRandom().name,
+      strokeWidth: 3,
+      palette: "system.#05",
       symmetry: "none",
       combination: "ca",
       color_shift: true,
