@@ -2,14 +2,14 @@ import * as dat from "dat.gui";
 import generate from "isometric-automata";
 import * as tome from "chromotome";
 
-let sketch = function(p) {
+let sketch = function (p) {
   const frame_dim = 0;
   const grid_size = 1400;
 
   let gui;
   let options;
 
-  p.setup = function() {
+  p.setup = function () {
     p.pixelDensity(4);
     p.createCanvas(1400, 1000);
 
@@ -33,18 +33,14 @@ let sketch = function(p) {
       randomize_divs: () => randomize_divs(),
       randomize_inits: () => randomize_inits(),
       randomize_colors: () => randomize_colors(),
-      redraw: () => run()
+      redraw: () => run(),
     };
 
     gui = new dat.GUI();
 
     let f0 = gui.addFolder("Layout");
-    f0.add(options, "resolution", 4, 60, 2)
-      .name("Resolution")
-      .onChange(run);
-    f0.add(options, "strokeWidth", 0, 5, 1)
-      .name("Stroke width")
-      .onChange(run);
+    f0.add(options, "resolution", 4, 60, 2).name("Resolution").onChange(run);
+    f0.add(options, "strokeWidth", 0, 5, 1).name("Stroke width").onChange(run);
     f0.open();
 
     let symm_folder = gui.addFolder("Symmetry");
@@ -52,14 +48,8 @@ let sketch = function(p) {
       .add(options, "symmetry", ["none", "rotate", "reflect"])
       .name("Symmetry type")
       .onChange(run);
-    symm_folder
-      .add(options, "partitions", ["sixths", "thirds"])
-      .name("Partitions")
-      .onChange(run);
-    symm_folder
-      .add(options, "color_shift")
-      .name("Color shift")
-      .onChange(run);
+    symm_folder.add(options, "partitions", ["sixths", "thirds"]).name("Partitions").onChange(run);
+    symm_folder.add(options, "color_shift").name("Color shift").onChange(run);
     symm_folder.open();
 
     let divider_folder = gui.addFolder("Dividers");
@@ -70,27 +60,15 @@ let sketch = function(p) {
     divider_folder.open();
 
     let color_folder = gui.addFolder("Colors");
-    color_folder
-      .add(options, "colorize")
-      .name("Toggle color")
-      .onChange(run);
-    color_folder
-      .add(options, "palette", tome.getNames())
-      .name("Color palette")
-      .onChange(run);
-    color_folder
-      .add(options, "random_color_combo")
-      .name("Use seed")
-      .onChange(run);
+    color_folder.add(options, "colorize").name("Toggle color").onChange(run);
+    color_folder.add(options, "palette", tome.getNames()).name("Color palette").onChange(run);
+    color_folder.add(options, "random_color_combo").name("Use seed").onChange(run);
     color_folder.add(options, "color_seed").name("Seed");
     color_folder.add(options, "randomize_colors").name("Randomize seed");
     color_folder.open();
 
     let initials_folder = gui.addFolder("Initial Conditions");
-    initials_folder
-      .add(options, "random_init")
-      .name("Use seed")
-      .onChange(run);
+    initials_folder.add(options, "random_init").name("Use seed").onChange(run);
     initials_folder.add(options, "init_seed").name("Seed");
     initials_folder.add(options, "randomize_inits").name("Randomize seed");
     initials_folder.open();
@@ -104,7 +82,7 @@ let sketch = function(p) {
     run();
   };
 
-  p.keyPressed = function() {
+  p.keyPressed = function () {
     if (p.keyCode === 80)
       p.saveCanvas(
         "sketch_" + options.h_seed_str + "_" + options.v_seed_str + "_" + options.d_seed_str,
@@ -184,9 +162,9 @@ let sketch = function(p) {
       random_init: options.random_init,
       init_seed: options.init_seed,
       combo: options.random_color_combo ? "ca" : "simple",
-      palette_size: p.min(tome.get(options.palette).colors.length, 6),
+      palette_size: p.min(tome.get(options.palette).colors.length, 5),
       offset: 2,
-      color_seed: options.color_seed
+      color_seed: options.color_seed,
     });
   }
 
@@ -381,8 +359,8 @@ let sketch = function(p) {
 
   function get_seeds() {
     const url = window.location.href.split("#");
-    if (url.length === 1) return [1, 2, 3].map(_ => randomInt(Math.pow(2, 8)));
-    return url[1].split(":").map(x => +x);
+    if (url.length === 1) return [1, 2, 3].map((_) => randomInt(Math.pow(2, 8)));
+    return url[1].split(":").map((x) => +x);
   }
 
   function update_url() {
