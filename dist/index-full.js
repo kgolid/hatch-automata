@@ -2947,6 +2947,12 @@
       background: '#161616',
     },
     {
+      name: 'yuma_punk2',
+      colors: ['#f2d002', '#f7f5e1', '#ec643b'],
+      stroke: '#19080e',
+      background: '#f7f5e1',
+    },
+    {
       name: 'moir',
       colors: ['#a49f4f', '#d4501e', '#f7c558', '#ebbaa6'],
       stroke: '#161716',
@@ -2986,6 +2992,60 @@
       name: 'kaffeprat',
       colors: ['#BCAA8C', '#D8CDBE', '#484A42', '#746B58', '#9A8C73'],
       stroke: '#000',
+      background: '#fff',
+    },
+    {
+      name: 'jrmy',
+      colors: ['#df456c', '#ea6a82', '#270b32', '#471e43'],
+      stroke: '#270b32',
+      background: '#ef9198',
+    },
+    {
+      name: 'animo',
+      colors: ['#f6c103', '#f6f6f6', '#d1cdc7', '#e7e6e5'],
+      stroke: '#010001',
+      background: '#f5f5f5',
+    },
+    {
+      name: 'book',
+      colors: ['#be1c24', '#d1a082', '#037b68', '#d8b1a5', '#1c2738', '#c95a3f'],
+      stroke: '#0e0f27',
+      background: '#f5b28a',
+    },
+    {
+      name: 'juxtapoz',
+      colors: ['#20357e', '#f44242', '#ffffff'],
+      stroke: '#000000',
+      background: '#cfc398',
+    },
+    {
+      name: 'hurdles',
+      colors: ['#e16503', '#dc9a0f', '#dfe2b4', '#66a7a6'],
+      stroke: '#3c1c03',
+      background: '#3c1c03',
+    },
+    {
+      name: 'ludo',
+      colors: ['#df302f', '#e5a320', '#0466b3', '#0f7963'],
+      stroke: '#272621',
+      background: '#dedccd',
+    },
+    {
+      name: 'riff',
+      colors: ['#e24724', '#c7c7c7', '#1f3e7c', '#d29294', '#010203'],
+      stroke: '#010203',
+      background: '#f2f2f2',
+    },
+    {
+      name: 'san ramon',
+      colors: ['#4f423a', '#f6a74b', '#589286', '#f8e9e2', '#2c2825'],
+      stroke: '#2c2825',
+      background: '#fff',
+    },
+    {
+      name: 'one-dress',
+      colors: ['#1767D2', '#FFFFFF', '#F9AB00', '#212121'],
+      stroke: '#212121',
       background: '#fff',
     },
   ];
@@ -3451,56 +3511,62 @@
       name: 'dt01',
       colors: ['#172a89', '#f7f7f3'],
       stroke: '#172a89',
-      background: '#f3abb0'
+      background: '#f3abb0',
     },
     {
       name: 'dt02',
       colors: ['#302956', '#f3c507'],
       stroke: '#302956',
-      background: '#eee3d3'
+      background: '#eee3d3',
     },
     {
       name: 'dt03',
       colors: ['#000000', '#a7a7a7'],
       stroke: '#000000',
-      background: '#0a5e78'
+      background: '#0a5e78',
     },
     {
       name: 'dt04',
       colors: ['#50978e', '#f7f0df'],
       stroke: '#000000',
-      background: '#f7f0df'
+      background: '#f7f0df',
     },
     {
       name: 'dt05',
       colors: ['#ee5d65', '#f0e5cb'],
       stroke: '#080708',
-      background: '#f0e5cb'
+      background: '#f0e5cb',
     },
     {
       name: 'dt06',
       colors: ['#271f47', '#e7ceb5'],
       stroke: '#271f47',
-      background: '#cc2b1c'
+      background: '#cc2b1c',
     },
     {
       name: 'dt07',
       colors: ['#6a98a5', '#d24c18'],
       stroke: '#efebda',
-      background: '#efebda'
+      background: '#efebda',
     },
     {
       name: 'dt08',
       colors: ['#5d9d88', '#ebb43b'],
       stroke: '#efebda',
-      background: '#efebda'
+      background: '#efebda',
     },
     {
       name: 'dt09',
       colors: ['#052e57', '#de8d80'],
       stroke: '#efebda',
-      background: '#efebda'
-    }
+      background: '#efebda',
+    },
+    {
+      name: 'dt10',
+      colors: ['#e5dfcf', '#151513'],
+      stroke: '#151513',
+      background: '#e9b500',
+    },
   ];
 
   var hilda = [
@@ -3736,6 +3802,186 @@
       stroke: '#463930',
       background: '#e5e2cf',
     },
+    {
+      name: 'honey',
+      colors: ['#f14d42', '#f4fdec', '#4fbe5d', '#265487', '#f6e916', '#f9a087', '#2e99d6'],
+      stroke: '#141414',
+      background: '#f4fdec',
+    },
+    {
+      name: 'jungle',
+      colors: [
+        '#adb100',
+        '#e5f4e9',
+        '#f4650f',
+        '#4d6838',
+        '#cb9e00',
+        '#689c7d',
+        '#e2a1a8',
+        '#151c2e',
+      ],
+      stroke: '#0e0f27',
+      background: '#cecaa9',
+    },
+    {
+      name: 'skyspider',
+      colors: ['#f4b232', '#f2dbbd', '#01799c', '#e93e48', '#0b1952', '#006748', '#ed817d'],
+      stroke: '#050505',
+      background: '#f0dbbc',
+    },
+    {
+      name: 'atlas',
+      colors: ['#5399b1', '#f4e9d5', '#de4037', '#ed942f', '#4e9e48', '#7a6e62'],
+      stroke: '#3d352b',
+      background: '#f0c328',
+    },
+    {
+      name: 'giftcard',
+      colors: [
+        '#FBF5E9',
+        '#FF514E',
+        '#FDBC2E',
+        '#4561CC',
+        '#2A303E',
+        '#6CC283',
+        '#A71172',
+        '#238DA5',
+        '#9BD7CB',
+        '#231E58',
+        '#4E0942',
+      ],
+      stroke: '#000',
+      background: '#FBF5E9',
+    },
+    {
+      name: 'giftcard_sub',
+      colors: [
+        '#FBF5E9',
+        '#FF514E',
+        '#FDBC2E',
+        '#4561CC',
+        '#2A303E',
+        '#6CC283',
+        '#238DA5',
+        '#9BD7CB',
+      ],
+      stroke: '#000',
+      background: '#FBF5E9',
+    },
+  ];
+
+  var dale = [
+    {
+      name: 'dale_paddle',
+      colors: [
+        '#ff7a5a',
+        '#765aa6',
+        '#fee7bc',
+        '#515e8c',
+        '#ffc64a',
+        '#b460a6',
+        '#ffffff',
+        '#4781c1',
+      ],
+      stroke: '#000000',
+      background: '#abe9e8',
+    },
+    {
+      name: 'dale_night',
+      colors: ['#ae5d9d', '#f1e8bc', '#ef8fa3', '#f7c047', '#58c9ed', '#f77150'],
+      stroke: '#000000',
+      background: '#00ae83',
+    },
+    {
+      name: 'dale_cat',
+      colors: ['#f77656', '#f7f7f7', '#efc545', '#dfe0e2', '#3c70bd', '#66bee4'],
+      stroke: '#000000',
+      background: '#f6e0b8',
+    },
+  ];
+
+  var cako = [
+    {
+      name: 'cako1',
+      colors: ['#000000', '#d55a3a', '#2a5c8a', '#7e7d14', '#dbdac9'],
+      stroke: '#000000',
+      background: '#f4e9d5',
+    },
+    {
+      name: 'cako2',
+      colors: ['#dbdac9', '#d55a3a', '#2a5c8a', '#b47b8c', '#7e7d14'],
+      stroke: '#000000',
+      background: '#000000',
+    },
+    {
+      name: 'cako2_sub1',
+      colors: ['#dbdac9', '#d55a3a', '#2a5c8a'],
+      stroke: '#000000',
+      background: '#000000',
+    },
+    {
+      name: 'cako2_sub2',
+      colors: ['#dbdac9', '#d55a3a', '#7e7d14'],
+      stroke: '#000000',
+      background: '#000000',
+    },
+  ];
+
+  var mayo = [
+    {
+      name: 'mayo1',
+      colors: ['#ea510e', '#ffd203', '#0255a3', '#039177', '#111111'],
+      stroke: '#111111',
+      background: '#fff',
+    },
+    {
+      name: 'mayo2',
+      colors: ['#ea663f', '#f9cc27', '#84afd7', '#7ca994', '#f1bbc9', '#242424'],
+      stroke: '#2a2a2a',
+      background: '#f5f6f1',
+    },
+    {
+      name: 'mayo3',
+      colors: ['#ea5b19', '#f8c9b9', '#137661', '#2a2a2a'],
+      stroke: '#2a2a2a',
+      background: '#f5f4f0',
+    },
+  ];
+
+  var exposito = [
+    {
+      name: 'exposito',
+      colors: [
+        '#8bc9c3',
+        '#ffae43',
+        '#ea432c',
+        '#228345',
+        '#d1d7d3',
+        '#524e9c',
+        '#9dc35e',
+        '#f0a1a1',
+      ],
+      stroke: '#fff',
+      background: '#000000',
+    },
+    {
+      name: 'exposito_sub1',
+      colors: ['#8bc9c3', '#ffae43', '#ea432c', '#524e9c'],
+      stroke: '#fff',
+      background: '#000000',
+    },
+    {
+      name: 'exposito_sub2',
+      colors: ['#8bc9c3', '#ffae43', '#ea432c', '#524e9c', '#f0a1a1', '#228345'],
+      stroke: '#fff',
+      background: '#000000',
+    },
+    {
+      name: 'exposito_sub3',
+      colors: ['#ffae43', '#ea432c', '#524e9c', '#f0a1a1'],
+      stroke: '#fff',
+      background: '#000000',
+    },
   ];
 
   const pals = misc.concat(
@@ -3754,7 +4000,11 @@
     spatial,
     jung,
     system,
-    flourish
+    flourish,
+    dale,
+    cako,
+    mayo,
+    exposito
   );
 
   var palettes = pals.map((p) => {
@@ -3775,14 +4025,14 @@
     return palettes.map(p => p.name);
   }
 
-  let sketch = function(p) {
+  let sketch = function (p) {
     const frame_dim = 0;
     const grid_size = 1400;
 
     let gui$$1;
     let options;
 
-    p.setup = function() {
+    p.setup = function () {
       p.pixelDensity(4);
       p.createCanvas(1400, 1000);
 
@@ -3806,18 +4056,14 @@
         randomize_divs: () => randomize_divs(),
         randomize_inits: () => randomize_inits(),
         randomize_colors: () => randomize_colors(),
-        redraw: () => run()
+        redraw: () => run(),
       };
 
       gui$$1 = new GUI$1();
 
       let f0 = gui$$1.addFolder("Layout");
-      f0.add(options, "resolution", 4, 60, 2)
-        .name("Resolution")
-        .onChange(run);
-      f0.add(options, "strokeWidth", 0, 5, 1)
-        .name("Stroke width")
-        .onChange(run);
+      f0.add(options, "resolution", 4, 60, 2).name("Resolution").onChange(run);
+      f0.add(options, "strokeWidth", 0, 5, 1).name("Stroke width").onChange(run);
       f0.open();
 
       let symm_folder = gui$$1.addFolder("Symmetry");
@@ -3825,14 +4071,8 @@
         .add(options, "symmetry", ["none", "rotate", "reflect"])
         .name("Symmetry type")
         .onChange(run);
-      symm_folder
-        .add(options, "partitions", ["sixths", "thirds"])
-        .name("Partitions")
-        .onChange(run);
-      symm_folder
-        .add(options, "color_shift")
-        .name("Color shift")
-        .onChange(run);
+      symm_folder.add(options, "partitions", ["sixths", "thirds"]).name("Partitions").onChange(run);
+      symm_folder.add(options, "color_shift").name("Color shift").onChange(run);
       symm_folder.open();
 
       let divider_folder = gui$$1.addFolder("Dividers");
@@ -3843,27 +4083,15 @@
       divider_folder.open();
 
       let color_folder = gui$$1.addFolder("Colors");
-      color_folder
-        .add(options, "colorize")
-        .name("Toggle color")
-        .onChange(run);
-      color_folder
-        .add(options, "palette", getNames())
-        .name("Color palette")
-        .onChange(run);
-      color_folder
-        .add(options, "random_color_combo")
-        .name("Use seed")
-        .onChange(run);
+      color_folder.add(options, "colorize").name("Toggle color").onChange(run);
+      color_folder.add(options, "palette", getNames()).name("Color palette").onChange(run);
+      color_folder.add(options, "random_color_combo").name("Use seed").onChange(run);
       color_folder.add(options, "color_seed").name("Seed");
       color_folder.add(options, "randomize_colors").name("Randomize seed");
       color_folder.open();
 
       let initials_folder = gui$$1.addFolder("Initial Conditions");
-      initials_folder
-        .add(options, "random_init")
-        .name("Use seed")
-        .onChange(run);
+      initials_folder.add(options, "random_init").name("Use seed").onChange(run);
       initials_folder.add(options, "init_seed").name("Seed");
       initials_folder.add(options, "randomize_inits").name("Randomize seed");
       initials_folder.open();
@@ -3877,7 +4105,7 @@
       run();
     };
 
-    p.keyPressed = function() {
+    p.keyPressed = function () {
       if (p.keyCode === 80)
         p.saveCanvas(
           "sketch_" + options.h_seed_str + "_" + options.v_seed_str + "_" + options.d_seed_str,
@@ -3957,9 +4185,9 @@
         random_init: options.random_init,
         init_seed: options.init_seed,
         combo: options.random_color_combo ? "ca" : "simple",
-        palette_size: p.min(get$1(options.palette).colors.length, 6),
+        palette_size: p.min(get$1(options.palette).colors.length, 5),
         offset: 2,
-        color_seed: options.color_seed
+        color_seed: options.color_seed,
       });
     }
 
@@ -4154,8 +4382,8 @@
 
     function get_seeds() {
       const url = window.location.href.split("#");
-      if (url.length === 1) return [1, 2, 3].map(_ => randomInt(Math.pow(2, 8)));
-      return url[1].split(":").map(x => +x);
+      if (url.length === 1) return [1, 2, 3].map((_) => randomInt(Math.pow(2, 8)));
+      return url[1].split(":").map((x) => +x);
     }
 
     function update_url() {

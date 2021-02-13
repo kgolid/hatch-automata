@@ -18,7 +18,7 @@
     "url": "git://github.com/kgolid/hatch-automata.git"
   },
   "dependencies": {
-    "chromotome": "^1.17.2",
+    "chromotome": "^1.19.1",
     "dat.gui": "^0.7.7",
     "isometric-automata": "^2.0.3"
   },
